@@ -1,0 +1,36 @@
+### RECUPERATION DE LA LISTE DES APPARTEMENTS
+GET http://localhost:8000/api/appartements
+
+###INSERER UN NOUVEAU APPARTEMENT
+POST http://localhost:8000/api/appartements
+Content-Type: application/json
+
+{
+    "numero_etage":5,
+    "numero_appartement":2,
+    "superficie":30,
+    "nbr_chambre":3,
+    "prix_previsionnel":150000,
+    "type":1,
+    "immeuble_id":1
+}
+
+### RECUPERATION D'UN SEUL APPARTEMENT
+GET http://localhost:8000/api/appartements/1
+
+###MISE A JOUR UN NOUVEAU APPARTEMENT
+PUT http://localhost:8000/api/appartements/1
+Content-Type: application/json
+
+{
+    "numero_etage":5,
+    "numero_appartement":2,
+    "superficie":30,
+    "nbr_chambre":3,
+    "prix_previsionnel":150000,
+    "type":0,
+    "immeuble_id":5
+}
+
+### SUPPRESSION D'UN SEUL APPARTEMENT
+DELETE http://localhost:8000/api/appartements/1

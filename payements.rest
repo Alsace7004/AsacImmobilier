@@ -1,0 +1,26 @@
+### RECUPERATION DE LA LISTE DES APPARTEMENTS
+GET http://localhost:8000/api/payements 
+
+###INSERER UN NOUVEAU APPARTEMENT
+POST http://localhost:8000/api/payements 
+Content-Type: application/json
+
+{
+    "promesse_vente_id":1,
+    "prix_payer":500
+}
+
+### RECUPERATION D'UN SEUL APPARTEMENT
+GET http://localhost:8000/api/payements/1
+
+###MISE A JOUR UN NOUVEAU APPARTEMENT
+PATCH http://localhost:8000/api/payements/1
+Content-Type: application/json
+
+{
+    "promesse_vente_id":1,
+    "prix_payer":5000
+}
+
+### SUPPRESSION D'UN SEUL APPARTEMENT
+DELETE http://localhost:8000/api/payements/1

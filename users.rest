@@ -1,0 +1,27 @@
+### RECUPERATION DE LA LISTE DES USERS
+GET http://localhost:8000/api/users
+
+###INSERER UN NOUVEAU USER
+POST http://localhost:8000/api/users
+Content-Type: application/json
+
+{
+    "name":"Ayedon Olatounde",
+    "email":"Ayedon@Olatounde.com",
+    "password":"123456789"
+}
+
+### RECUPERATION D'UN SEUL USER
+GET http://localhost:8000/api/users/1
+
+###MISE A JOUR UN NOUVEAU USER
+PATCH http://localhost:8000/api/users/1
+Content-Type: application/json
+
+{
+    "name":"Ayedon Olatounde",
+    "email":"Ayedon@Olatounde.com"
+}
+
+### SUPPRESSION D'UN SEUL USER
+DELETE http://localhost:8000/api/users/1

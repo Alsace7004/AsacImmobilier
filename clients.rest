@@ -1,0 +1,36 @@
+### RECUPERATION DE LA LISTE DES APPARTEMENTS
+GET http://localhost:8000/api/clients
+
+###INSERER UN NOUVEAU APPARTEMENT
+POST http://localhost:8000/api/clients
+Content-Type: application/json
+
+{
+    "CIN":"7145SSE895",
+    "nom":"Ageto",
+    "prenom1":"Ekpe",
+    "prenom2":"Lonlon",
+    "adresse":"Rue Koumea",
+    "telephone":"90000001",
+    "profession":"mecanicien"
+}
+
+### RECUPERATION D'UN SEUL APPARTEMENT
+GET http://localhost:8000/api/clients/2
+
+###MISE A JOUR UN NOUVEAU APPARTEMENT
+PATCH http://localhost:8000/api/clients/2
+Content-Type: application/json
+
+{
+    "CIN":"7145SSE895",
+    "nom":"AGBETO",
+    "prenom1":"Ekpe",
+    "prenom2":"Lonlon",
+    "adresse":"Rue Koumea",
+    "telephone":"90000001",
+    "profession":"Journaliste"
+}
+
+### SUPPRESSION D'UN SEUL APPARTEMENT
+DELETE http://localhost:8000/api/appartements/1

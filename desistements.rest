@@ -1,0 +1,28 @@
+### RECUPERATION DE LA LISTE DES APPARTEMENTS
+GET http://localhost:8000/api/desistements
+
+###INSERER UN NOUVEAU APPARTEMENT
+POST http://localhost:8000/api/desistements
+Content-Type: application/json
+
+{
+    "promesse_vente_id":2,
+    "numero":0,
+    "causes_annulation":"Ce quartier ne plus a ma Femme"
+}
+
+### RECUPERATION D'UN SEUL APPARTEMENT
+GET http://localhost:8000/api/desistements/2
+
+###MISE A JOUR UN NOUVEAU APPARTEMENT
+PATCH http://localhost:8000/api/desistements/2
+Content-Type: application/json
+
+{
+    "promesse_vente_id":2,
+    "numero":1,
+    "causes_annulation":"Ce quartier ne plait plus a ma Femme"
+}
+
+### SUPPRESSION D'UN SEUL APPARTEMENT
+DELETE http://localhost:8000/api/desistements/1

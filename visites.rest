@@ -1,0 +1,28 @@
+### RECUPERATION DE LA LISTE DES VISISTES
+GET http://localhost:8000/api/visites
+
+###INSERER UN NOUVEAU VISISTE
+POST http://localhost:8000/api/visites
+Content-Type: application/json
+
+{
+    "client_id":1,
+    "appartement_id":1,
+    "remarque_client":"Voila, j'ai visité l'appart mais j'aime pas trop les couleurs de l'intereieur"
+}
+
+### RECUPERATION D'UN SEUL VISISTE
+GET http://localhost:8000/api/visites/1
+
+###MISE A JOUR UN NOUVEAU VISISTE
+PATCH http://localhost:8000/api/visites/1
+Content-Type: application/json
+
+{
+    "client_id":1,
+    "appartement_id":1,
+    "remarque_client":"Voila, j'ai visite l'appart mais j'aime pas trop les couleurs de l'intereieur"
+}
+
+### SUPPRESSION D'UN SEUL VISISTE
+DELETE http://localhost:8000/api/visites/1

@@ -1,0 +1,34 @@
+### RECUPERATION DE LA LISTE DES APPARTEMENTS
+GET http://localhost:8000/api/avocats
+
+###INSERER UN NOUVEAU APPARTEMENT
+POST http://localhost:8000/api/avocats
+Content-Type: application/json
+
+{
+    "nom":"Ayo",
+    "prenom":"Babatoundi",
+    "adresse":"Okuta",
+    "telephone1":"90900003",
+    "telephone2":"90900003",
+    "num_autorisation":"8466gfdg"
+}
+
+### RECUPERATION D'UN SEUL APPARTEMENT
+GET http://localhost:8000/api/avocats/1
+
+###MISE A JOUR UN NOUVEAU APPARTEMENT
+PATCH http://localhost:8000/api/avocats/1
+Content-Type: application/json
+
+{
+    "nom":"Abiola",
+    "prenom":"Adetola",
+    "adresse":"vice city",
+    "telephone1":"90900000",
+    "telephone2":"90900000",
+    "num_autorisation":"8466gfdg"
+}
+
+### SUPPRESSION D'UN SEUL APPARTEMENT
+DELETE http://localhost:8000/api/visites/1

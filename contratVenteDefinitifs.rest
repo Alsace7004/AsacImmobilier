@@ -1,0 +1,40 @@
+### RECUPERATION DE LA LISTE DES APPARTEMENTS
+GET http://localhost:8000/api/contratVenteDefinitifs 
+
+###INSERER UN NOUVEAU APPARTEMENT
+POST http://localhost:8000/api/contratVenteDefinitifs 
+Content-Type: application/json
+
+{
+    "avocat_id":4,
+    "promesse_vente_id":2,
+    "promesse_vente_client_id":1,
+    "promesse_vente_appartement_id":1,
+    "prix_vente":450000,
+    "type_payement":"Tmoney",
+    "signature_acquereur":"Gbemisoke-signature-acquereur",
+    "signature_directeur_commercial":"Oremi-signature-directeur-commercial",
+    "description_appartement":"Description de l'appart ayant pour id promesse_vente_appartement_id"
+}
+
+### RECUPERATION D'UN SEUL APPARTEMENT
+GET http://localhost:8000/api/contratVenteDefinitifs/1
+
+###MISE A JOUR UN NOUVEAU APPARTEMENT
+PATCH http://localhost:8000/api/contratVenteDefinitifs/1
+Content-Type: application/json
+
+{
+    "avocat_id":1,
+    "promesse_vente_id":1,
+    "promesse_vente_client_id":1,
+    "promesse_vente_appartement_id":1,
+    "prix_vente":350000,
+    "type_payement":"Liquide",
+    "signature_acquereur":"Omontayo-signature-acquereur",
+    "signature_directeur_commercial":"Oremi-signature-directeur-commercial",
+    "description_appartement":"Description de l'appart ayant pour id promesse_vente_appartement_id"
+}
+
+### SUPPRESSION D'UN SEUL APPARTEMENT
+DELETE http://localhost:8000/api/contratVenteDefinitifs/1

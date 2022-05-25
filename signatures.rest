@@ -1,0 +1,30 @@
+### RECUPERATION DE LA LISTE DES SIGNATURES
+GET http://localhost:8000/api/signatures
+
+###INSERER UN NOUVEAU SIGNATURE
+POST http://localhost:8000/api/signatures
+Content-Type: application/json
+
+{
+    "avocat_id":5,
+    "promesse_vente_id":2,
+    "signaturePromesseAcquereur":"Oluwafoumi-signature-acquereur",
+    "signaturePromesseDirecteurCommercial":"Oluwafoumi-signature-directeur-commercial"
+}
+
+### RECUPERATION D'UN SEUL SIGNATURE
+GET http://localhost:8000/api/signatures/4
+
+###MISE A JOUR UN NOUVEAU SIGNATURE
+PATCH http://localhost:8000/api/signatures/1
+Content-Type: application/json
+
+{
+    "avocat_id":1,
+    "promesse_vente_id":2,
+    "signaturePromesseAcquereur":"Foumilayo-signature-acquereur",
+    "signaturePromesseDirecteurCommercial":"Foumilola-signature-directeur-commercial"
+}
+
+### SUPPRESSION D'UN SEUL SIGNATURE
+DELETE http://localhost:8000/api/signatures/1

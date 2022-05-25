@@ -1,0 +1,33 @@
+### RECUPERATION DE LA LISTE DES APPARTEMENTS
+GET http://localhost:8000/api/promesseVentes 
+
+###INSERER UN NOUVEAU APPARTEMENT
+POST http://localhost:8000/api/promesseVentes 
+Content-Type: application/json
+
+{
+    "client_id":1,
+    "appartement_id":1,
+    "tauxTVA":20,
+    "prixVenteDefinitifHT":35000,
+    "prixVenteDefinitifTTC":0,
+    "avance":500,
+    "etat":1,
+    "nom_promesse":"client-1-appartement-1"
+}
+
+### RECUPERATION D'UN SEUL APPARTEMENT
+GET http://localhost:8000/api/promesseVentes/1
+
+###MISE A JOUR UN NOUVEAU APPARTEMENT
+PATCH http://localhost:8000/api/promesseVentes/1
+Content-Type: application/json
+
+{
+    "client_id":1,
+    "appartement_id":1,
+    "remarque_client":"Voila, j'ai visite l'appart mais j'aime pas trop les couleurs de l'intereieur"
+}
+
+### SUPPRESSION D'UN SEUL APPARTEMENT
+DELETE http://localhost:8000/api/promesseVentes/1

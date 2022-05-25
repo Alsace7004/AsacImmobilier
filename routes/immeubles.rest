@@ -1,0 +1,31 @@
+### RECUPERATION DE LA LISTE DES IMMEUBLES
+GET http://localhost:8000/api/immeubles
+### RECUPERATION DU NOMBRE TOTAL D'IMMEUBLE EN BDD
+GET http://localhost:8000/api/immeublesNumb  
+### INSERER UN IMMEUBLE
+POST http://localhost:8000/api/immeubles
+Content-Type: application/json
+
+{
+    "nom":"Immeuble TENTACION",
+    "adresse":"XXX",
+    "nbr_appartement":500,
+    "nbr_etages":6
+}
+
+### RECUPERATION D'UN SEUL IMMEUBLE
+GET http://localhost:8000/api/immeubles/10
+
+### MISE A JOUR D'UN IMMEUBLE
+PUT http://localhost:8000/api/immeubles/1
+Content-Type: application/json
+
+{
+    "nom":"Immeuble des Elphes de Lucifer",
+    "adresse":"Adougba",
+    "nbr_appartement":125,
+    "nbr_etages":5
+}
+
+### SUPPRESSION D'UN IMMEUBLE
+DELETE http://localhost:8000/api/immeubles/2
