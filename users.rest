@@ -6,8 +6,8 @@ POST http://localhost:8000/api/users
 Content-Type: application/json
 
 {
-    "name":"Ayedon Olatounde",
-    "email":"Ayedon@Olatounde.com",
+    "name":"Otaobayomi Oluwanioje",
+    "email":"Otaobayomi@Oluwanioje.com",
     "password":"123456789"
 }
 

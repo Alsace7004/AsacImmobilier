@@ -32,7 +32,7 @@ class ClientController extends Controller
             'CIN'=>'required|string|unique:clients,CIN',
             'nom'=>'required|string',
             'prenom1'=>'required|string',
-            'prenom2'=>'string',
+            'prenom2'=>'nullable',
             'adresse'=>'required|string',
             'telephone'=>'required|string|unique:clients,telephone',
             'profession'=>'required|string'
@@ -67,7 +67,7 @@ class ClientController extends Controller
             'CIN'=>'required|string',
             'nom'=>'required|string',
             'prenom1'=>'required|string',
-            'prenom2'=>'required|string',
+            'prenom2'=>'nullable',
             'adresse'=>'required|string',
             'telephone'=>'required|string',
             'profession'=>'required|string'

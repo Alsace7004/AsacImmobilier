@@ -33,8 +33,8 @@ class AvocatController extends Controller
             'prenom'=>'required|string',
             'adresse'=>'required|string',
             'telephone1'=>'required|string',
-            'telephone2'=>'string',
-            'telephone3'=>'string',
+            'telephone2'=>'required|string',
+            'telephone3'=>'nullable',
             'num_autorisation'=>'string|required',
         ]);
         return Avocat::create($data);
@@ -67,8 +67,8 @@ class AvocatController extends Controller
             'prenom'=>'required|string',
             'adresse'=>'required|string',
             'telephone1'=>'required|string',
-            'telephone2'=>'string',
-            'telephone3'=>'string',
+            'telephone2'=>'required|string',
+            'telephone3'=>'nullable',
             'num_autorisation'=>'string|required',
         ]);
         $avocat->update($data);
