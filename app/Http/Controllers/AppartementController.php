@@ -39,11 +39,12 @@ class AppartementController extends Controller
             'superficie'=>'required|numeric',
             'nbr_chambre'=>'required|integer',
             'prix_previsionnel'=>'required|numeric',
-            'type'=>'required|boolean',
+            'type'=>'required|string',
             'immeuble_id'=>'required|integer'
         ]);
         $data = $request->all();
         $data['numero'] = $data['numero_etage'].'-'.$data['numero_appartement'];
+        $data['type'] =1;
         return Appartement::create($data);
     }
 
@@ -76,11 +77,12 @@ class AppartementController extends Controller
             'superficie'=>'required|numeric',
             'nbr_chambre'=>'required|integer',
             'prix_previsionnel'=>'required|numeric',
-            'type'=>'required|boolean',
+            'type'=>'required|string',
             'immeuble_id'=>'required|integer'
         ]);
         $data = $request->all();
         $data['numero'] = $data['numero_etage'].'-'.$data['numero_appartement'];
+        //$data['type'] =1;
         $appartement->update($data);
         return $appartement;
     }

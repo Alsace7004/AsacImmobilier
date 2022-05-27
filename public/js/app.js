@@ -2082,12 +2082,277 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {};
+    return {
+      immeubles: [],
+      appartements: [],
+      appartement: {
+        immeuble_id: '',
+        numero_etage: '',
+        numero_appartement: '',
+        numero: this.numero_etage,
+        superficie: '',
+        nbr_chambre: '',
+        prix_previsionnel: '',
+        type: ''
+      },
+      edit_id: '',
+      is_Editing: false
+    };
   },
-  methods: {},
-  created: function created() {},
+  methods: {
+    loadImmeubles: function loadImmeubles() {
+      var _this = this;
+
+      axios.get('api/immeubles').then(function (immeubles) {
+        _this.immeubles = immeubles.data;
+      });
+    },
+    convert: function convert(jour) {
+      var date = new Date(jour);
+      return date.toDateString(); // "sun nov 29 2020 "
+    },
+    newModal: function newModal() {
+      this.appartement = {
+        immeuble_id: '',
+        numero_etage: '',
+        numero_appartement: '',
+        numero: '369',
+        superficie: '',
+        nbr_chambre: '',
+        prix_previsionnel: '',
+        type: '9'
+      };
+      this.is_Editing = false;
+      $('#addNew').modal('show');
+    },
+    loadAppartements: function loadAppartements() {
+      var _this2 = this;
+
+      axios.get('api/appartements').then(function (appartements) {
+        _this2.appartements = appartements.data;
+      });
+    },
+    createAppartement: function createAppartement() {
+      var _this3 = this;
+
+      var imd = document.querySelector("#immeuble_id").value;
+      var ne = document.querySelector("#numero_etage").value;
+      var na = document.querySelector("#numero_appartement").value;
+      var su = document.querySelector("#superficie").value;
+      var nc = document.querySelector("#nbr_chambre").value;
+      var pp = document.querySelector("#prix_previsionnel").value;
+
+      if (imd == "" || ne == "" || na == "" || su == "" || nc == "" || pp == "") {
+        Toast.fire({
+          icon: 'error',
+          title: 'veuillez remplir tous les champs !!!'
+        });
+        return;
+      }
+
+      axios.post("api/appartements", this.appartement).then(function () {
+        //$('#addNew').modal('hide'); 
+        Swal.fire('Created!', 'Appartement Ajouter avec success.', 'success');
+
+        _this3.loadAppartements();
+
+        _this3.appartement = {
+          immeuble_id: '',
+          numero_etage: '',
+          numero_appartement: '',
+          numero: '',
+          superficie: '',
+          nbr_chambre: '',
+          prix_previsionnel: '',
+          type: ''
+        };
+      })["catch"](function (err) {
+        Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+      });
+    },
+    deleteAppartement: function deleteAppartement(id) {
+      var _this4 = this;
+
+      Swal.fire({
+        title: 'Etes vous sûr???',
+        text: "Pas de récuperation possible!!!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, supprimer le'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          axios["delete"]("api/appartements/".concat(id)).then(function () {
+            Swal.fire('Deleted!', 'Appartement a été supprimé(e).', 'success');
+
+            _this4.loadAppartements();
+          })["catch"](function (err) {
+            Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+          });
+        } else {
+          Swal.fire('Cancelled !!!', 'Votre Appartement est toujours disponible !!!', 'error');
+        }
+      }); //first Then
+    },
+    //deleteAppartement
+    editAppartement: function editAppartement(id) {
+      var _this5 = this;
+
+      axios.get("api/appartements/".concat(id)).then(function (res) {
+        $('#addNew').modal('show');
+        _this5.edit_id = res.data.id;
+        _this5.appartement.immeuble_id = res.data.immeuble_id;
+        _this5.appartement.numero_etage = res.data.numero_etage;
+        _this5.appartement.numero_appartement = res.data.numero_appartement;
+        _this5.appartement.superficie = res.data.superficie;
+        _this5.appartement.nbr_chambre = res.data.nbr_chambre;
+        _this5.appartement.prix_previsionnel = res.data.prix_previsionnel;
+        _this5.appartement.type = res.data.type;
+        _this5.is_Editing = true;
+      });
+    },
+    updateAppartement: function updateAppartement() {
+      var _this6 = this;
+
+      axios.put("api/appartements/".concat(this.edit_id), this.appartement).then(function () {
+        $('#addNew').modal('hide');
+        Swal.fire('Updated!', 'Appartemnt mise à jour avec success.', 'success');
+
+        _this6.loadAppartements();
+
+        _this6.edit_id = "";
+        _this6.is_Editing = false;
+      })["catch"](function (err) {
+        Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+      });
+    }
+  },
+  created: function created() {
+    this.loadImmeubles();
+    this.loadAppartements();
+  },
   mounted: function mounted() {
     console.log('Component mounted.');
   }
@@ -43986,7 +44251,482 @@ var render = function () {
     [
       _c("page-title", { attrs: { title: "Les Appartements" } }),
       _vm._v(" "),
-      _vm._m(0),
+      _c("div", { staticClass: "d-flex justify-content-end" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success btn-sm mb-3",
+            attrs: { "data-toggle": "modal", "data-target": "#addNew" },
+            on: { click: _vm.newModal },
+          },
+          [_vm._v("Ajouter")]
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-12" }, [
+          _c("div", { staticClass: "card" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "card-body table-responsive p-0",
+                staticStyle: { height: "300px" },
+              },
+              [
+                _c(
+                  "table",
+                  { staticClass: "table table-head-fixed text-nowrap" },
+                  [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.appartements, function (appartement) {
+                        return _c("tr", { key: appartement.id }, [
+                          _c("td", [_vm._v(_vm._s(appartement.id))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(appartement.numero))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(appartement.superficie) + " m²"),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(appartement.nbr_chambre))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(appartement.prix_previsionnel) + " XOF"
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(appartement.type))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(appartement.appartement_immeuble)),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("span", { staticClass: "tag tag-success" }, [
+                              _vm._v(
+                                _vm._s(_vm.convert(appartement.created_at))
+                              ),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-success btn-sm",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.editAppartement(appartement.id)
+                                  },
+                                },
+                              },
+                              [_vm._v("Edit")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-danger btn-sm",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.deleteAppartement(appartement.id)
+                                  },
+                                },
+                              },
+                              [_vm._v("Delete")]
+                            ),
+                          ]),
+                        ])
+                      }),
+                      0
+                    ),
+                  ]
+                ),
+              ]
+            ),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "addNew",
+            tabindex: "-1",
+            "aria-labelledby": "exampleModalLabel",
+            "aria-hidden": "true",
+          },
+        },
+        [
+          _c("div", { staticClass: "modal-dialog" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title",
+                    attrs: { id: "exampleModalLabel" },
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(
+                        _vm.is_Editing
+                          ? "Update Appartement"
+                          : "Add New Appartement"
+                      )
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(2),
+              ]),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function ($event) {
+                      $event.preventDefault()
+                      _vm.is_Editing
+                        ? _vm.updateAppartement()
+                        : _vm.createAppartement()
+                    },
+                  },
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-6" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.appartement.immeuble_id,
+                                  expression: "appartement.immeuble_id",
+                                },
+                              ],
+                              staticClass: "form-control",
+                              attrs: { id: "immeuble_id" },
+                              on: {
+                                change: function ($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function (o) {
+                                      return o.selected
+                                    })
+                                    .map(function (o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.appartement,
+                                    "immeuble_id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                },
+                              },
+                            },
+                            [
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    value: "",
+                                    hidden: "",
+                                    selected: "",
+                                  },
+                                },
+                                [_vm._v("Selectionner un immeuble")]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(_vm.immeubles, function (immeuble) {
+                                return _c(
+                                  "option",
+                                  {
+                                    key: immeuble.id,
+                                    domProps: { value: immeuble.id },
+                                  },
+                                  [_vm._v(_vm._s(immeuble.nom))]
+                                )
+                              }),
+                            ],
+                            2
+                          ),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.appartement.numero_etage,
+                                expression: "appartement.numero_etage",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              id: "numero_etage",
+                              placeholder: "Numero d'etage de l'Appart...",
+                            },
+                            domProps: { value: _vm.appartement.numero_etage },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.appartement,
+                                  "numero_etage",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.appartement.numero_appartement,
+                                expression: "appartement.numero_appartement",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              id: "numero_appartement",
+                              placeholder: "Numero de l'Appart sur un etage...",
+                            },
+                            domProps: {
+                              value: _vm.appartement.numero_appartement,
+                            },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.appartement,
+                                  "numero_appartement",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-6" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.appartement.superficie,
+                                expression: "appartement.superficie",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              id: "superficie",
+                              placeholder: "Superficie de l'appartement...",
+                            },
+                            domProps: { value: _vm.appartement.superficie },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.appartement,
+                                  "superficie",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.appartement.nbr_chambre,
+                                expression: "appartement.nbr_chambre",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              id: "nbr_chambre",
+                              placeholder:
+                                "Nombre de chambre de l'appartement...",
+                            },
+                            domProps: { value: _vm.appartement.nbr_chambre },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.appartement,
+                                  "nbr_chambre",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.appartement.prix_previsionnel,
+                                expression: "appartement.prix_previsionnel",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              id: "prix_previsionnel",
+                              placeholder:
+                                "Prix previsionnel de l'appartement...",
+                            },
+                            domProps: {
+                              value: _vm.appartement.prix_previsionnel,
+                            },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.appartement,
+                                  "prix_previsionnel",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-12" }, [
+                        _vm.is_Editing
+                          ? _c("div", [
+                              _c("div", { staticClass: "form-group" }, [
+                                _c(
+                                  "select",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.appartement.type,
+                                        expression: "appartement.type",
+                                      },
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { id: "type", name: "" },
+                                    on: {
+                                      change: function ($event) {
+                                        var $$selectedVal =
+                                          Array.prototype.filter
+                                            .call(
+                                              $event.target.options,
+                                              function (o) {
+                                                return o.selected
+                                              }
+                                            )
+                                            .map(function (o) {
+                                              var val =
+                                                "_value" in o
+                                                  ? o._value
+                                                  : o.value
+                                              return val
+                                            })
+                                        _vm.$set(
+                                          _vm.appartement,
+                                          "type",
+                                          $event.target.multiple
+                                            ? $$selectedVal
+                                            : $$selectedVal[0]
+                                        )
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _c("option", { attrs: { value: "" } }, [
+                                      _vm._v("Status de L'Appartement"),
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("option", { attrs: { value: "1" } }, [
+                                      _vm._v("Disponible"),
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("option", { attrs: { value: "0" } }, [
+                                      _vm._v("Vendu"),
+                                    ]),
+                                  ]
+                                ),
+                              ]),
+                            ])
+                          : _vm._e(),
+                      ]),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", "data-dismiss": "modal" },
+                      },
+                      [_vm._v("Close")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" },
+                      },
+                      [_vm._v(_vm._s(_vm.is_Editing ? "Update" : "Create"))]
+                    ),
+                  ]),
+                ]
+              ),
+            ]),
+          ]),
+        ]
+      ),
     ],
     1
   )
@@ -43996,21 +44736,82 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8 mt-5" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v("Appartements Component"),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _vm._v(
-              "\n                    I'm an Appartements component.\n                "
-            ),
-          ]),
-        ]),
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [
+        _vm._v("Liste des Appartements"),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-tools" }, [
+        _c(
+          "div",
+          {
+            staticClass: "input-group input-group-sm",
+            staticStyle: { width: "150px" },
+          },
+          [
+            _c("input", {
+              staticClass: "form-control float-right",
+              attrs: {
+                type: "text",
+                name: "table_search",
+                placeholder: "Search",
+              },
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group-append" }, [
+              _c(
+                "button",
+                { staticClass: "btn btn-default", attrs: { type: "submit" } },
+                [_c("i", { staticClass: "fas fa-search" })]
+              ),
+            ]),
+          ]
+        ),
       ]),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Numero")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Superficie")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Nbr Chambre")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Prix")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Type")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Immeuble")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Created_at")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Actions")]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close",
+        },
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   },
 ]
 render._withStripped = true
