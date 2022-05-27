@@ -3664,12 +3664,236 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {};
+    return {
+      clients: [],
+      appartements: [],
+      visites: [],
+      visite: {
+        client_id: '',
+        appartement_id: '',
+        remarque_client: ''
+      },
+      edit_id: '',
+      is_Editing: false
+    };
   },
-  methods: {},
-  created: function created() {},
+  methods: {
+    getPostBody: function getPostBody(post) {
+      //let body = this.stripTags(post.body);
+      return post.length > 5 ? post.substring(0, 300) + '...' : post;
+    },
+
+    /*stripTags (text) {
+        return text.replace(/(<([^>]+)>)/ig, '');
+    },*/
+    convert: function convert(jour) {
+      var date = new Date(jour);
+      return date.toDateString(); // "sun nov 29 2020 "
+    },
+    newModal: function newModal() {
+      this.visite = {
+        client_id: '',
+        appartement_id: '',
+        remarque_client: ''
+      };
+      this.is_Editing = false;
+      $('#addNew').modal('show');
+    },
+    loadClients: function loadClients() {
+      var _this = this;
+
+      axios.get('api/clients').then(function (clients) {
+        _this.clients = clients.data;
+      });
+    },
+    loadAppartements: function loadAppartements() {
+      var _this2 = this;
+
+      axios.get('api/appartements').then(function (appartements) {
+        _this2.appartements = appartements.data;
+      });
+    },
+    loadVisites: function loadVisites() {
+      var _this3 = this;
+
+      axios.get('api/visites').then(function (visites) {
+        _this3.visites = visites.data;
+      });
+    },
+    createVisite: function createVisite() {
+      var _this4 = this;
+
+      var cid = document.querySelector("#client_id").value;
+      var ap = document.querySelector("#appartement_id").value;
+      var ri = document.querySelector("#remarque_client").value;
+
+      if (cid == "" || ap == "" || ri == "") {
+        Toast.fire({
+          icon: 'error',
+          title: 'veuillez remplir tous les champs !!!'
+        });
+        return;
+      }
+
+      axios.post("api/visites", this.visite).then(function () {
+        //$('#addNew').modal('hide'); 
+        Swal.fire('Created!', 'Visite Ajouter avec success.', 'success');
+
+        _this4.loadVisites();
+
+        _this4.visite = {
+          client_id: '',
+          appartement_id: '',
+          remarque_client: ''
+        };
+      })["catch"](function (err) {
+        Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+      });
+    },
+    deleteVisite: function deleteVisite(id) {
+      var _this5 = this;
+
+      Swal.fire({
+        title: 'Etes vous sûr???',
+        text: "Pas de récuperation possible!!!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, supprimer le'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          axios["delete"]("api/visites/".concat(id)).then(function () {
+            Swal.fire('Deleted!', 'La Visite a été supprimé(e).', 'success');
+
+            _this5.loadVisites();
+          })["catch"](function (err) {
+            Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+          });
+        } else {
+          Swal.fire('Cancelled !!!', 'Votre Visite est toujours disponible !!!', 'error');
+        }
+      }); //first Then
+    },
+    //deleteVisite
+    editVisite: function editVisite(id) {
+      var _this6 = this;
+
+      axios.get("api/visites/".concat(id)).then(function (res) {
+        $('#addNew').modal('show');
+        _this6.edit_id = res.data.id;
+        _this6.visite.client_id = res.data.client_id;
+        _this6.visite.appartement_id = res.data.appartement_id;
+        _this6.visite.remarque_client = res.data.remarque_client;
+        _this6.is_Editing = true;
+      });
+    },
+    updateVisite: function updateVisite() {
+      var _this7 = this;
+
+      axios.put("api/visites/".concat(this.edit_id), this.visite).then(function () {
+        $('#addNew').modal('hide');
+        Swal.fire('Updated!', 'Visite mise à jour avec success.', 'success');
+
+        _this7.loadVisites();
+
+        _this7.edit_id = "";
+        _this7.is_Editing = false;
+      })["catch"](function (err) {
+        Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+      });
+    }
+  },
+  created: function created() {
+    this.loadVisites();
+    this.loadClients();
+    this.loadAppartements();
+  },
   mounted: function mounted() {
     console.log('Component mounted.');
   }
@@ -46888,7 +47112,320 @@ var render = function () {
     [
       _c("page-title", { attrs: { title: "Les visites" } }),
       _vm._v(" "),
-      _vm._m(0),
+      _c("div", { staticClass: "d-flex justify-content-end" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success btn-sm mb-3",
+            attrs: { "data-toggle": "modal", "data-target": "#addNew" },
+            on: { click: _vm.newModal },
+          },
+          [_vm._v("Ajouter")]
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-12" }, [
+          _c("div", { staticClass: "card" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "card-body table-responsive p-0",
+                staticStyle: { height: "300px" },
+              },
+              [
+                _c(
+                  "table",
+                  { staticClass: "table table-head-fixed text-nowrap" },
+                  [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.visites, function (visite) {
+                        return _c("tr", { key: visite.id }, [
+                          _c("td", [_vm._v(_vm._s(visite.id))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(visite.client_id))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(visite.appartement_id))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(_vm.getPostBody(visite.remarque_client))
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("span", { staticClass: "tag tag-success" }, [
+                              _vm._v(_vm._s(_vm.convert(visite.created_at))),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-success btn-sm",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.editVisite(visite.id)
+                                  },
+                                },
+                              },
+                              [_vm._v("Edit")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-danger btn-sm",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.deleteVisite(visite.id)
+                                  },
+                                },
+                              },
+                              [_vm._v("Delete")]
+                            ),
+                          ]),
+                        ])
+                      }),
+                      0
+                    ),
+                  ]
+                ),
+              ]
+            ),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "addNew",
+            tabindex: "-1",
+            "aria-labelledby": "exampleModalLabel",
+            "aria-hidden": "true",
+          },
+        },
+        [
+          _c("div", { staticClass: "modal-dialog" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title",
+                    attrs: { id: "exampleModalLabel" },
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(
+                        _vm.is_Editing ? "Update Visite" : "Add New Visite"
+                      )
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(2),
+              ]),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function ($event) {
+                      $event.preventDefault()
+                      _vm.is_Editing ? _vm.updateVisite() : _vm.createVisite()
+                    },
+                  },
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.visite.client_id,
+                              expression: "visite.client_id",
+                            },
+                          ],
+                          staticClass: "form-control",
+                          attrs: { id: "client_id" },
+                          on: {
+                            change: function ($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function (o) {
+                                  return o.selected
+                                })
+                                .map(function (o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.visite,
+                                "client_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            },
+                          },
+                        },
+                        [
+                          _c(
+                            "option",
+                            { attrs: { value: "", hidden: "", selected: "" } },
+                            [_vm._v("Selectionner le client")]
+                          ),
+                          _vm._v(" "),
+                          _vm._l(_vm.clients, function (client) {
+                            return _c(
+                              "option",
+                              {
+                                key: client.id,
+                                domProps: { value: client.id },
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(client.nom) +
+                                    " " +
+                                    _vm._s(client.prenom1)
+                                ),
+                              ]
+                            )
+                          }),
+                        ],
+                        2
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.visite.appartement_id,
+                              expression: "visite.appartement_id",
+                            },
+                          ],
+                          staticClass: "form-control",
+                          attrs: { id: "appartement_id" },
+                          on: {
+                            change: function ($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function (o) {
+                                  return o.selected
+                                })
+                                .map(function (o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.visite,
+                                "appartement_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            },
+                          },
+                        },
+                        [
+                          _c(
+                            "option",
+                            { attrs: { value: "", hidden: "", selected: "" } },
+                            [_vm._v("Selectionner un Appart")]
+                          ),
+                          _vm._v(" "),
+                          _vm._l(_vm.appartements, function (appartement) {
+                            return _c(
+                              "option",
+                              {
+                                key: appartement.id,
+                                domProps: { value: appartement.id },
+                              },
+                              [_vm._v(_vm._s(appartement.appartement_immeuble))]
+                            )
+                          }),
+                        ],
+                        2
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("textarea", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.visite.remarque_client,
+                            expression: "visite.remarque_client",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          name: "",
+                          id: "remarque_client",
+                          cols: "5",
+                          rows: "2",
+                          placeholder: "Remarque du Client...",
+                        },
+                        domProps: { value: _vm.visite.remarque_client },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.visite,
+                              "remarque_client",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", "data-dismiss": "modal" },
+                      },
+                      [_vm._v("Close")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" },
+                      },
+                      [_vm._v(_vm._s(_vm.is_Editing ? "Update" : "Create"))]
+                    ),
+                  ]),
+                ]
+              ),
+            ]),
+          ]),
+        ]
+      ),
     ],
     1
   )
@@ -46898,21 +47435,74 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8 mt-5" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v("Visites Component"),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _vm._v(
-              "\n                    I'm an Visites component.\n                "
-            ),
-          ]),
-        ]),
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Liste des Visites")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-tools" }, [
+        _c(
+          "div",
+          {
+            staticClass: "input-group input-group-sm",
+            staticStyle: { width: "150px" },
+          },
+          [
+            _c("input", {
+              staticClass: "form-control float-right",
+              attrs: {
+                type: "text",
+                name: "table_search",
+                placeholder: "Search",
+              },
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group-append" }, [
+              _c(
+                "button",
+                { staticClass: "btn btn-default", attrs: { type: "submit" } },
+                [_c("i", { staticClass: "fas fa-search" })]
+              ),
+            ]),
+          ]
+        ),
       ]),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Client")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Appartement")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Remarque")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Created_at")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Actions")]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close",
+        },
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   },
 ]
 render._withStripped = true
