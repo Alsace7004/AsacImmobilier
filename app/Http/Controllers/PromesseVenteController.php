@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Payement;
 use Illuminate\Http\Request;
 use App\Models\PromesseVente;
 use Illuminate\Support\Facades\DB;
@@ -135,10 +136,53 @@ class PromesseVenteController extends Controller
         $data = $request->validate([
             'avance'=>'required|numeric'
         ]);
-
-        return response()->json([
+        /*return response()->json([
             '$id' => $id,
-            '$avance'=>$data['avance']
-        ],400);
+            'message'=>$data['avance']
+        ],400);*/
+       // $pvi = $data['promesse_vente_id'];
+        $pp = $data['avance'];
+        $data['promesse_vente_id']=$id;
+        $data['prix_payer']=$data['avance'];
+        $ttc = DB::SELECT("SELECT prixVenteDefinitifTTC FROM promesse_ventes WHERE id = $id");
+        $av = DB::SELECT("SELECT avance FROM promesse_ventes WHERE id = $id");
+        $pr = ($ttc[0]->prixVenteDefinitifTTC)-($av[0]->avance);//prix_restant_a_payer
+        
+        if($ttc>($av[0]->avance)){
+            if($pp>$pr){
+                $ristourne =  $pp-$pr;
+                DB::SELECT("UPDATE promesse_ventes SET avance = avance + $pp WHERE id = $id");
+                Payement::create($data);
+                return response()->json([
+                    'ristourne'=>$ristourne,
+                    'message'=>'Vous avez soldé et vous avez une ristourne de ('.$ristourne.' XOF)'
+                ],400);
+            }else if($pp<$pr){
+                $ristourne =  $pr-$pp;
+                DB::SELECT("UPDATE promesse_ventes SET avance = avance + $pp WHERE id = $id");
+                Payement::create($data);
+                return response()->json([
+                    'ristourne'=>$ristourne,
+                    'message'=>'Il vous reste encore ('.$ristourne.' XOF à payer)'
+                ],400);
+            }else if($pp == $pr){
+                DB::SELECT("UPDATE promesse_ventes SET avance = avance + $pp WHERE id = $id");
+                Payement::create($data);
+                return response()->json([
+                    'ristourne'=>$ristourne=0,
+                    'message'=>'Vous avez tous solder merci!!!'
+                ],400);
+            }
+        }else if($ttc==($av[0]->avance)){
+            return response()->json([
+                'ristourne'=>$ristourne=0,
+                'message'=>"C'est bon, vous avez solder"
+            ],400);
+        }else{
+            return response()->json([
+                'ristourne'=>$ristourne=0,
+                'message'=>"Une erreure malencontreuse est survenu !!!"
+            ],400);
+        }
     }
 }

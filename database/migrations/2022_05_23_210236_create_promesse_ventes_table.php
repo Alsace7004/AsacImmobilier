@@ -15,7 +15,7 @@ class CreatePromesseVentesTable extends Migration
     {
         Schema::create('promesse_ventes', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('client_id');
+            $table->unsignedBigInteger('client_id')->unique();
             $table->unsignedBigInteger('appartement_id');
             $table->double('tauxTVA');
             $table->double('prixVenteDefinitifHT');

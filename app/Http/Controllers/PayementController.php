@@ -56,7 +56,7 @@ class PayementController extends Controller
                 Payement::create($data);
                 return response()->json([
                     'message'=>'Vous avez une ristourne de ('.$ristourne.'XOF)'
-                ],400);
+                ],200);
             }else if($pp<$pr){
                 $ristourne =  $pr-$pp;
                 DB::SELECT("UPDATE promesse_ventes SET avance = avance + $pp WHERE id = $pvi");
@@ -69,11 +69,15 @@ class PayementController extends Controller
                 Payement::create($data);
                 return response()->json([
                     'message'=>'Vous avez tous solder'
-                ],400);
+                ],200);
             }
         }else if($ttc==($av[0]->avance)){
             return response()->json([
                 'message'=>"C'est bon, vous avez solder"
+            ],200);
+        }else{
+            return response()->json([
+                'message'=>"Une erreure malencontreuse est survenu !!!"
             ],400);
         }
        

@@ -3842,6 +3842,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -4015,7 +4017,7 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.post("api/promesseVentePayements/".concat(this.pay_id), this.promessevente).then(function () {
         //$('#addNew').modal('hide'); 
-        Swal.fire('Created!', 'Payement de vente Ajouter avec success.', 'success');
+        Swal.fire('Created!', 'Payement sur cette Promesse de vente Effectuer avec success.', 'success');
 
         _this8.loadPromesseVentes();
 
@@ -4029,7 +4031,7 @@ __webpack_require__.r(__webpack_exports__);
           etat: ''
         };
       })["catch"](function (err) {
-        Swal.fire('Error !!!', "Une Erreur Survenue !!! \n\n ".concat(err.response.data.message, " XOF "), 'error');
+        Swal.fire('Avertissement !!!', "Une Erreur Survenue !!! \n\n ".concat(err.response.data.message, " XOF "), 'warning');
       });
     }
   },
@@ -47784,6 +47786,18 @@ var render = function () {
                           ]),
                           _vm._v(" "),
                           _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                promessevente.avance >
+                                  promessevente.prixVenteDefinitifTTC
+                                  ? promessevente.avance -
+                                      promessevente.prixVenteDefinitifTTC
+                                  : "0"
+                              ) + " XOF"
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
                             _vm._v(_vm._s(promessevente.appartement_immeuble)),
                           ]),
                           _vm._v(" "),
@@ -48376,6 +48390,8 @@ var staticRenderFns = [
         _c("th", [_vm._v("Avance")]),
         _vm._v(" "),
         _c("th", [_vm._v("Rest à payer")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Ristourne")]),
         _vm._v(" "),
         _c("th", [_vm._v("Appartements")]),
         _vm._v(" "),

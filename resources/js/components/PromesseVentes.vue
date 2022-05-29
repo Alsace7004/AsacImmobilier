@@ -33,6 +33,7 @@
                       <th>Prix_TTC</th>
                       <th>Avance</th>
                       <th>Rest à payer</th>
+                      <th>Ristourne</th>
                       <!--<th>Etat</th>-->
                       <th>Appartements</th>
                       <th>Clients</th>
@@ -48,6 +49,7 @@
                       <td>{{(promessevente.prixVenteDefinitifTTC)}} XOF</td>
                       <td>{{promessevente.avance}} XOF</td>
                       <td>{{(promessevente.prixVenteDefinitifTTC - promessevente.avance)>0 ?(promessevente.prixVenteDefinitifTTC - promessevente.avance):'0'}} XOF</td>
+                      <td>{{(promessevente.avance>promessevente.prixVenteDefinitifTTC)?(promessevente.avance-promessevente.prixVenteDefinitifTTC):'0'}} XOF</td>
                         <!--<td>{{promessevente.etat}}</td>-->
                        <td>{{promessevente.appartement_immeuble}}</td>
                        <td>{{promessevente.nom}} {{promessevente.prenom1}}</td>
@@ -185,7 +187,7 @@
                 },
                 edit_id:'',
                 is_Editing:false,
-                pay_id:''
+                pay_id:'',
             }
         },
         methods:{
@@ -308,18 +310,16 @@
                 alert(id)
                 this.pay_id=id;
                 //alert(this.pay_id)
-                
             },
             createPayPromesseVente(){
                 let av = document.querySelector("#avance").value;
-                
                 if(av==""){
                     Toast.fire({icon: 'error',title: 'veuillez remplir tous les champs !!!'});
                     return;
                 }
                 axios.post(`api/promesseVentePayements/${ this.pay_id}`,this.promessevente).then(()=>{
                     //$('#addNew').modal('hide'); 
-                    Swal.fire('Created!','Payement de vente Ajouter avec success.','success') ;
+                    Swal.fire('Created!','Payement sur cette Promesse de vente Effectuer avec success.','success') ;
                     this.loadPromesseVentes();
                     this.promessevente={
                         client_id:'',
@@ -331,8 +331,7 @@
                         etat:'',
                     }
                 }).catch((err)=>{
-
-                    Swal.fire('Error !!!',`Une Erreur Survenue !!! \n\n ${err.response.data.message} XOF `,'error')
+                    Swal.fire('Avertissement !!!',`Une Erreur Survenue !!! \n\n ${err.response.data.message} XOF `,'warning');
                 })
             }
         },
