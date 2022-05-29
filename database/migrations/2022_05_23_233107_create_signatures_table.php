@@ -16,7 +16,7 @@ class CreateSignaturesTable extends Migration
         Schema::create('signatures', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('avocat_id');
-            $table->unsignedBigInteger('promesse_vente_id');
+            $table->unsignedBigInteger('promesse_vente_id')->unique();
             $table->string('signaturePromesseAcquereur');
             $table->string('signaturePromesseDirecteurCommercial');
             $table->foreign('avocat_id')->references('id')->on('avocats')->onUpdate('cascade')->onDelete('cascade');

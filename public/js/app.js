@@ -3364,8 +3364,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   props: {
     title: String
@@ -4170,6 +4168,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
@@ -4192,9 +4191,11 @@ __webpack_require__.r(__webpack_exports__);
       return date.toDateString(); // "sun nov 29 2020 "
     },
     newModal: function newModal() {
-      this.payement = {
+      this.signature = {
+        avocat_id: '',
         promesse_vente_id: '',
-        prix_payer: ''
+        signaturePromesseAcquereur: '0',
+        signaturePromesseDirecteurCommercial: '0'
       };
       this.is_Editing = false;
       $('#addNew').modal('show');
@@ -4218,6 +4219,88 @@ __webpack_require__.r(__webpack_exports__);
 
       axios.get('api/signatures').then(function (signatures) {
         _this3.signatures = signatures.data;
+      });
+    },
+
+    /*handleFileUpload1(){
+        this.signature.signaturePromesseAcquereur = this.$refs.signaturePromesseAcquereur.files[0];
+        console.log('valeur du this.file1',this.signature.signaturePromesseAcquereur);
+    },
+    handleFileUpload2(){
+        this.signature.signaturePromesseDirecteurCommercial = this.$refs.signaturePromesseDirecteurCommercial.files[0];
+          console.log('valeur du this.file2',this.signature.signaturePromesseDirecteurCommercial);
+    },*/
+    createSignature: function createSignature() {
+      var _this4 = this;
+
+      axios.post('api/signatures', this.signature).then(function () {
+        $('#addNew').modal('hide');
+        Swal.fire('Created!', 'Signature Ajouter avec success.', 'success');
+
+        _this4.loadSignatures();
+
+        _this4.signature = {
+          avocat_id: '',
+          promesse_vente_id: '',
+          signaturePromesseAcquereur: '0',
+          signaturePromesseDirecteurCommercial: '0'
+        };
+      })["catch"](function (err) {
+        Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+      });
+    },
+    deleteSignature: function deleteSignature(id) {
+      var _this5 = this;
+
+      Swal.fire({
+        title: 'Etes vous sûr???',
+        text: "Pas de récuperation possible!!!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, supprimer le'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          axios["delete"]("api/signatures/".concat(id)).then(function () {
+            Swal.fire('Deleted!', 'La Signature a été supprimé(e).', 'success');
+
+            _this5.loadSignatures();
+          })["catch"](function (err) {
+            Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+          });
+        } else {
+          Swal.fire('Cancelled !!!', 'Votre Signature est toujours disponible !!!', 'error');
+        }
+      }); //first Then
+    },
+    //deleteSignature
+    editSignature: function editSignature(id) {
+      var _this6 = this;
+
+      axios.get("api/signatures/".concat(id)).then(function (res) {
+        $('#addNew').modal('show');
+        _this6.edit_id = res.data.id;
+        _this6.signature.avocat_id = res.data.avocat_id;
+        _this6.signature.promesse_vente_id = res.data.promesse_vente_id;
+        _this6.signature.signaturePromesseAcquereur = res.data.signaturePromesseAcquereur;
+        _this6.signature.signaturePromesseDirecteurCommercial = res.data.signaturePromesseDirecteurCommercial;
+        _this6.is_Editing = true;
+      });
+    },
+    updateSignature: function updateSignature() {
+      var _this7 = this;
+
+      axios.put("api/signatures/".concat(this.edit_id), this.signature).then(function () {
+        $('#addNew').modal('hide');
+        Swal.fire('Updated!', 'Signature mise à jour avec success.', 'success');
+
+        _this7.loadSignatures();
+
+        _this7.edit_id = "";
+        _this7.is_Editing = false;
+      })["catch"](function (err) {
+        Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
       });
     }
   },
@@ -47371,16 +47454,14 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
+  return _c("div", [
     _c("div", { staticClass: "content-header" }, [
-      _c("div", { staticClass: "container-fluid" }, [
-        _c("div", { staticClass: "row mb-2" }, [
-          _c("div", { staticClass: "col-sm-6" }, [
-            _c("h3", { staticClass: "m-0" }, [_vm._v(_vm._s(_vm.title))]),
-          ]),
-          _vm._v(" "),
-          _vm._m(0),
+      _c("div", { staticClass: "row mb-2" }, [
+        _c("div", { staticClass: "col-sm-6" }, [
+          _c("h4", { staticClass: "ml-0" }, [_vm._v(_vm._s(_vm.title))]),
         ]),
+        _vm._v(" "),
+        _vm._m(0),
       ]),
     ]),
   ])
@@ -48676,10 +48757,18 @@ var render = function () {
                         return _c("tr", { key: signature.id }, [
                           _c("td", [_vm._v(_vm._s(signature.id))]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(signature.avocat_id))]),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(signature.nom) +
+                                " " +
+                                _vm._s(signature.prenom)
+                            ),
+                          ]),
                           _vm._v(" "),
                           _c("td", [
-                            _vm._v(_vm._s(signature.promesse_vente_id)),
+                            _vm._v(
+                              _vm._s(signature.client_appartement_immeuble)
+                            ),
                           ]),
                           _vm._v(" "),
                           _c("td", [
@@ -48779,6 +48868,7 @@ var render = function () {
               _c(
                 "form",
                 {
+                  attrs: { enctype: "multipart/form-data" },
                   on: {
                     submit: function ($event) {
                       $event.preventDefault()
@@ -48937,35 +49027,17 @@ var render = function () {
                       _c("div", { staticClass: "col-md-6" }, [
                         _c("div", { staticClass: "form-group" }, [
                           _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value: _vm.signature.signaturePromesseAcquereur,
-                                expression:
-                                  "signature.signaturePromesseAcquereur",
-                              },
-                            ],
+                            ref: "signaturePromesseAcquereur",
                             staticClass: "form-control",
                             attrs: {
-                              type: "text",
+                              type: "file",
                               id: "signaturePromesseAcquereur",
                               placeholder:
                                 "signature de Promesse de l'Acquereur...",
                             },
-                            domProps: {
-                              value: _vm.signature.signaturePromesseAcquereur,
-                            },
                             on: {
-                              input: function ($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.signature,
-                                  "signaturePromesseAcquereur",
-                                  $event.target.value
-                                )
+                              change: function ($event) {
+                                return _vm.handleFileUpload1()
                               },
                             },
                           }),
@@ -48973,39 +49045,17 @@ var render = function () {
                         _vm._v(" "),
                         _c("div", { staticClass: "form-group" }, [
                           _c("input", {
-                            directives: [
-                              {
-                                name: "model",
-                                rawName: "v-model",
-                                value:
-                                  _vm.signature
-                                    .signaturePromesseDirecteurCommercial,
-                                expression:
-                                  "signature.signaturePromesseDirecteurCommercial",
-                              },
-                            ],
+                            ref: "signaturePromesseDirecteurCommercial",
                             staticClass: "form-control",
                             attrs: {
-                              type: "text",
+                              type: "file",
                               id: "signaturePromesseDirecteurCommercial",
                               placeholder:
                                 "signature de la Promesse du Directeur Commercial...",
                             },
-                            domProps: {
-                              value:
-                                _vm.signature
-                                  .signaturePromesseDirecteurCommercial,
-                            },
                             on: {
-                              input: function ($event) {
-                                if ($event.target.composing) {
-                                  return
-                                }
-                                _vm.$set(
-                                  _vm.signature,
-                                  "signaturePromesseDirecteurCommercial",
-                                  $event.target.value
-                                )
+                              change: function ($event) {
+                                return _vm.handleFileUpload2()
                               },
                             },
                           }),

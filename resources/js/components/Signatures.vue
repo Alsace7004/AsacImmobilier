@@ -39,8 +39,8 @@
                   <tbody>
                     <tr v-for="signature in signatures" :key="signature.id">
                       <td>{{signature.id}}</td>
-                      <td>{{signature.avocat_id}}</td>
-                      <td>{{signature.promesse_vente_id}}</td>
+                      <td>{{signature.nom}} {{signature.prenom}}</td>
+                      <td>{{signature.client_appartement_immeuble}}</td>
                       <td>{{(signature.signaturePromesseAcquereur)}}</td>
                       <td>{{signature.signaturePromesseDirecteurCommercial}}</td>
                       <td><span class="tag tag-success">{{convert(signature.created_at)}}</span></td>
@@ -67,7 +67,7 @@
                         <span aria-hidden="true">&times;</span>
                         </button>
                     </div>
-                    <form @submit.prevent="is_Editing ? updateSignature() : createSignature()">
+                    <form @submit.prevent="is_Editing ? updateSignature() : createSignature()" enctype="multipart/form-data">
                         <div class="modal-body">
                             
                             <div class="row">
@@ -87,11 +87,12 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input type="text" v-model="signature.signaturePromesseAcquereur" id="signaturePromesseAcquereur" placeholder="signature de Promesse de l'Acquereur..." class="form-control">
+                                        <input type="file" ref="signaturePromesseAcquereur" id="signaturePromesseAcquereur" @change="handleFileUpload1()" placeholder="signature de Promesse de l'Acquereur..." class="form-control">
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" v-model="signature.signaturePromesseDirecteurCommercial" id="signaturePromesseDirecteurCommercial" placeholder="signature de la Promesse du Directeur Commercial..." class="form-control">
+                                        <input type="file" ref="signaturePromesseDirecteurCommercial" id="signaturePromesseDirecteurCommercial" @change="handleFileUpload2()" placeholder="signature de la Promesse du Directeur Commercial..." class="form-control">
                                     </div>
+                                    
                                 </div>
                             </div>
                             
@@ -133,9 +134,11 @@
                 return  date.toDateString() // "sun nov 29 2020 "
             },
             newModal(){
-                this.payement={
+                this.signature={
+                        avocat_id:'',
                         promesse_vente_id:'',
-                        prix_payer:'',
+                        signaturePromesseAcquereur:'0',
+                        signaturePromesseDirecteurCommercial:'0'
                     }
                 this.is_Editing = false;
                 $('#addNew').modal('show');
@@ -155,6 +158,81 @@
                     this.signatures = signatures.data;
                 })
             },
+
+            /*handleFileUpload1(){
+                this.signature.signaturePromesseAcquereur = this.$refs.signaturePromesseAcquereur.files[0];
+                console.log('valeur du this.file1',this.signature.signaturePromesseAcquereur);
+            },
+            handleFileUpload2(){
+                this.signature.signaturePromesseDirecteurCommercial = this.$refs.signaturePromesseDirecteurCommercial.files[0];
+                  console.log('valeur du this.file2',this.signature.signaturePromesseDirecteurCommercial);
+            },*/
+            createSignature(){
+                    axios.post('api/signatures',this.signature).then(()=>{
+                    $('#addNew').modal('hide'); 
+                    Swal.fire('Created!','Signature Ajouter avec success.','success') ;
+                        this.loadSignatures();
+                    this.signature={
+                        avocat_id:'',
+                        promesse_vente_id:'',
+                        signaturePromesseAcquereur:'0',
+                        signaturePromesseDirecteurCommercial:'0'
+                    }
+                    }).catch((err)=>{
+                        Swal.fire('Error !!!','Une Erreur Survenue !!!','error')
+                    });
+            },
+            deleteSignature(id){
+                    Swal.fire({
+                    title: 'Etes vous sûr???',
+                    text: "Pas de récuperation possible!!!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Oui, supprimer le'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            axios.delete(`api/signatures/${id}`).then(()=>{
+                            
+                                    Swal.fire(
+                                    'Deleted!',
+                                    'La Signature a été supprimé(e).',
+                                    'success'
+                                    )
+                                
+                                 this.loadSignatures();
+                            }).catch((err)=>{
+                                Swal.fire('Error !!!','Une Erreur Survenue !!!','error')
+                            })
+                        }else{
+                            Swal.fire('Cancelled !!!','Votre Signature est toujours disponible !!!','error')
+                        }
+                })//first Then
+            },//deleteSignature
+             editSignature(id){
+                axios.get(`api/signatures/${id}`).then((res)=>{
+                    $('#addNew').modal('show');
+                    this.edit_id = res.data.id;
+                    this.signature.avocat_id = res.data.avocat_id;
+                    this.signature.promesse_vente_id = res.data.promesse_vente_id;
+                    this.signature.signaturePromesseAcquereur = res.data.signaturePromesseAcquereur;
+                    this.signature.signaturePromesseDirecteurCommercial = res.data.signaturePromesseDirecteurCommercial;
+                    this.is_Editing = true;
+                })
+            },
+            updateSignature(){
+                    axios.put(`api/signatures/${this.edit_id}`,this.signature).then(()=>{
+                        $('#addNew').modal('hide');
+                        Swal.fire('Updated!','Signature mise à jour avec success.','success')    
+                        this.loadSignatures();
+                        this.edit_id = "";
+                        this.is_Editing = false;
+                    }).catch((err)=>{
+                        Swal.fire('Error !!!','Une Erreur Survenue !!!','error')
+                    })
+            },
+
         },
         created(){
             this.loadAvocats();
