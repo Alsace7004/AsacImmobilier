@@ -3999,7 +3999,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     payPromesseVente: function payPromesseVente(id) {
-      alert(id);
+      // alert(id)
       this.pay_id = id; //alert(this.pay_id)
     },
     createPayPromesseVente: function createPayPromesseVente() {
@@ -4075,12 +4075,157 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {};
+    return {
+      promesseventes: [],
+      avocats: [],
+      signatures: [],
+      signature: {
+        avocat_id: '',
+        promesse_vente_id: '',
+        signaturePromesseAcquereur: '',
+        signaturePromesseDirecteurCommercial: ''
+      },
+      edit_id: '',
+      is_Editing: false
+    };
   },
-  methods: {},
-  created: function created() {},
+  methods: {
+    convert: function convert(jour) {
+      var date = new Date(jour);
+      return date.toDateString(); // "sun nov 29 2020 "
+    },
+    newModal: function newModal() {
+      this.payement = {
+        promesse_vente_id: '',
+        prix_payer: ''
+      };
+      this.is_Editing = false;
+      $('#addNew').modal('show');
+    },
+    loadPromesseVentesCIA: function loadPromesseVentesCIA() {
+      var _this = this;
+
+      axios.get('api/clientIA').then(function (promesseventes) {
+        _this.promesseventes = promesseventes.data;
+      });
+    },
+    loadAvocats: function loadAvocats() {
+      var _this2 = this;
+
+      axios.get('api/avocats').then(function (avocats) {
+        _this2.avocats = avocats.data;
+      });
+    },
+    loadSignatures: function loadSignatures() {
+      var _this3 = this;
+
+      axios.get('api/signatures').then(function (signatures) {
+        _this3.signatures = signatures.data;
+      });
+    }
+  },
+  created: function created() {
+    this.loadAvocats();
+    this.loadSignatures();
+    this.loadPromesseVentesCIA();
+  },
   mounted: function mounted() {
     console.log('Component mounted.');
   }
@@ -48495,7 +48640,405 @@ var render = function () {
     [
       _c("page-title", { attrs: { title: "Les Signatures" } }),
       _vm._v(" "),
-      _vm._m(0),
+      _c("div", { staticClass: "d-flex justify-content-end" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success btn-sm mb-3",
+            attrs: { "data-toggle": "modal", "data-target": "#addNew" },
+            on: { click: _vm.newModal },
+          },
+          [_vm._v("Ajouter")]
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-12" }, [
+          _c("div", { staticClass: "card" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "card-body table-responsive p-0",
+                staticStyle: { height: "300px" },
+              },
+              [
+                _c(
+                  "table",
+                  { staticClass: "table table-head-fixed text-nowrap" },
+                  [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.signatures, function (signature) {
+                        return _c("tr", { key: signature.id }, [
+                          _c("td", [_vm._v(_vm._s(signature.id))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(signature.avocat_id))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(signature.promesse_vente_id)),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(signature.signaturePromesseAcquereur)
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                signature.signaturePromesseDirecteurCommercial
+                              )
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("span", { staticClass: "tag tag-success" }, [
+                              _vm._v(_vm._s(_vm.convert(signature.created_at))),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-success btn-sm",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.editSignature(signature.id)
+                                  },
+                                },
+                              },
+                              [_vm._v("Edit")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-danger btn-sm",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.deleteSignature(signature.id)
+                                  },
+                                },
+                              },
+                              [_vm._v("Delete")]
+                            ),
+                          ]),
+                        ])
+                      }),
+                      0
+                    ),
+                  ]
+                ),
+              ]
+            ),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "addNew",
+            tabindex: "-1",
+            "aria-labelledby": "exampleModalLabel",
+            "aria-hidden": "true",
+          },
+        },
+        [
+          _c("div", { staticClass: "modal-dialog" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title",
+                    attrs: { id: "exampleModalLabel" },
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(
+                        _vm.is_Editing
+                          ? "Update Signature"
+                          : "Add New Signature"
+                      )
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(2),
+              ]),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function ($event) {
+                      $event.preventDefault()
+                      _vm.is_Editing
+                        ? _vm.updateSignature()
+                        : _vm.createSignature()
+                    },
+                  },
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-6" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.signature.avocat_id,
+                                  expression: "signature.avocat_id",
+                                },
+                              ],
+                              staticClass: "form-control",
+                              attrs: { id: "client_id" },
+                              on: {
+                                change: function ($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function (o) {
+                                      return o.selected
+                                    })
+                                    .map(function (o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.signature,
+                                    "avocat_id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                },
+                              },
+                            },
+                            [
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    value: "",
+                                    hidden: "",
+                                    selected: "",
+                                  },
+                                },
+                                [_vm._v("Selectionner l'Avocat")]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(_vm.avocats, function (avocat) {
+                                return _c(
+                                  "option",
+                                  {
+                                    key: avocat.id,
+                                    domProps: { value: avocat.id },
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(avocat.nom) +
+                                        " " +
+                                        _vm._s(avocat.prenom)
+                                    ),
+                                  ]
+                                )
+                              }),
+                            ],
+                            2
+                          ),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.signature.promesse_vente_id,
+                                  expression: "signature.promesse_vente_id",
+                                },
+                              ],
+                              staticClass: "form-control",
+                              attrs: { id: "promesse_vente_id" },
+                              on: {
+                                change: function ($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function (o) {
+                                      return o.selected
+                                    })
+                                    .map(function (o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.signature,
+                                    "promesse_vente_id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                },
+                              },
+                            },
+                            [
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    value: "",
+                                    hidden: "",
+                                    selected: "",
+                                  },
+                                },
+                                [_vm._v("Selectionner une promesse vente")]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(
+                                _vm.promesseventes,
+                                function (promessevente) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: promessevente.id,
+                                      domProps: { value: promessevente.id },
+                                    },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          promessevente.client_appartement_immeuble
+                                        )
+                                      ),
+                                    ]
+                                  )
+                                }
+                              ),
+                            ],
+                            2
+                          ),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-6" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.signature.signaturePromesseAcquereur,
+                                expression:
+                                  "signature.signaturePromesseAcquereur",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              id: "signaturePromesseAcquereur",
+                              placeholder:
+                                "signature de Promesse de l'Acquereur...",
+                            },
+                            domProps: {
+                              value: _vm.signature.signaturePromesseAcquereur,
+                            },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.signature,
+                                  "signaturePromesseAcquereur",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value:
+                                  _vm.signature
+                                    .signaturePromesseDirecteurCommercial,
+                                expression:
+                                  "signature.signaturePromesseDirecteurCommercial",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              id: "signaturePromesseDirecteurCommercial",
+                              placeholder:
+                                "signature de la Promesse du Directeur Commercial...",
+                            },
+                            domProps: {
+                              value:
+                                _vm.signature
+                                  .signaturePromesseDirecteurCommercial,
+                            },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.signature,
+                                  "signaturePromesseDirecteurCommercial",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]),
+                      ]),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", "data-dismiss": "modal" },
+                      },
+                      [_vm._v("Close")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" },
+                      },
+                      [_vm._v(_vm._s(_vm.is_Editing ? "Update" : "Create"))]
+                    ),
+                  ]),
+                ]
+              ),
+            ]),
+          ]),
+        ]
+      ),
     ],
     1
   )
@@ -48505,21 +49048,76 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8 mt-5" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v("Signatures Component"),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _vm._v(
-              "\n                    I'm an Signatures component.\n                "
-            ),
-          ]),
-        ]),
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Liste des Signature")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-tools" }, [
+        _c(
+          "div",
+          {
+            staticClass: "input-group input-group-sm",
+            staticStyle: { width: "150px" },
+          },
+          [
+            _c("input", {
+              staticClass: "form-control float-right",
+              attrs: {
+                type: "text",
+                name: "table_search",
+                placeholder: "Search",
+              },
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group-append" }, [
+              _c(
+                "button",
+                { staticClass: "btn btn-default", attrs: { type: "submit" } },
+                [_c("i", { staticClass: "fas fa-search" })]
+              ),
+            ]),
+          ]
+        ),
       ]),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Avocat")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Promesse Vente")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Signature Acquereur")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Signature Directeur Commercial")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Created_at")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Actions")]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close",
+        },
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   },
 ]
 render._withStripped = true

@@ -307,7 +307,7 @@
                     })
             },
             payPromesseVente(id){
-                alert(id)
+               // alert(id)
                 this.pay_id=id;
                 //alert(this.pay_id)
             },
