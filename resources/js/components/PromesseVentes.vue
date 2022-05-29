@@ -53,42 +53,14 @@
                        <td>{{promessevente.nom}} {{promessevente.prenom1}}</td>
                       <td><span class="tag tag-success">{{convert(promessevente.created_at)}}</span></td>
                       <td>
-                          <button  class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addNewPay">Pay</button>
+                          <button @click="payPromesseVente(promessevente.id)" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addNewPay">Pay</button>
                           <button @click="editPromesseVente(promessevente.id)" class="btn btn-success btn-sm">Edit</button>
                           <button @click="deletePromesseVente(promessevente.id)" class="btn btn-danger btn-sm">Delete</button>
                       </td>
+
+                      
                     </tr>
-                            <!--------------------------------------------------------------------------------------->
-                            <!-- Modal -->
-                            <div class="modal fade" id="addNewPay" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Ajouter un Payement</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                            </button>
-                                        </div>
-                                        <form  @submit.prevent="payPromesseVente(promessevente.id)">
-                                            <div class="modal-body">
-                                                <div class="row">
-                                                
-                                                        <div class="form-group">
-                                                            <input type="text" v-model="promessevente.avance" id="avance" placeholder="Montant payement..." class="form-control">
-                                                        </div>
-                                        
-                                                </div>  
-                                            </div>
-                                        
-                                            <div class="modal-footer">
-                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                <button  type="submit" class="btn btn-primary">Add</button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- Modal -->
+                          
                    
                   </tbody>
                 </table>
@@ -164,6 +136,33 @@
             </div>
         </div>
         <!-- Modal -->
+        <!--------------------------------------------------------------------------------------->
+                            <!-- Modal -->
+                            <div class="modal fade" id="addNewPay" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="exampleModalLabel" >Ajouter un Payement</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <form  @submit.prevent="createPayPromesseVente">
+                                            <div class="modal-body">
+                                                        <div class="form-group">
+                                                            <input type="text" v-model="promessevente.avance" id="avance" placeholder="Montant payement..." class="form-control">
+                                                        </div>
+                                            </div>
+                                        
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button   type="submit" class="btn btn-primary">Add</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Modal -->
         
     </div>
 </template>
@@ -181,11 +180,12 @@
                     tauxTVA:'20',
                     prixVenteDefinitifHT:'',
                     prixVenteDefinitifTTC:'2',
-                    avance:'2500',
+                    avance:'',
                     etat:'11',
                 },
                 edit_id:'',
                 is_Editing:false,
+                pay_id:''
             }
         },
         methods:{
@@ -306,7 +306,18 @@
             },
             payPromesseVente(id){
                 alert(id)
-                axios.post(`api/promesseVentePayements/${id}`,this.promessevente).then(()=>{
+                this.pay_id=id;
+                //alert(this.pay_id)
+                
+            },
+            createPayPromesseVente(){
+                let av = document.querySelector("#avance").value;
+                
+                if(av==""){
+                    Toast.fire({icon: 'error',title: 'veuillez remplir tous les champs !!!'});
+                    return;
+                }
+                axios.post(`api/promesseVentePayements/${ this.pay_id}`,this.promessevente).then(()=>{
                     //$('#addNew').modal('hide'); 
                     Swal.fire('Created!','Payement de vente Ajouter avec success.','success') ;
                     this.loadPromesseVentes();
@@ -320,9 +331,10 @@
                         etat:'',
                     }
                 }).catch((err)=>{
-                    Swal.fire('Error !!!',`Une Erreur Survenue !!! \n\n ${err.response.data.message}`,'error')
+
+                    Swal.fire('Error !!!',`Une Erreur Survenue !!! \n\n ${err.response.data.message} XOF `,'error')
                 })
-            },
+            }
         },
         created(){
             this.loadClients();
