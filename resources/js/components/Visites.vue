@@ -38,9 +38,9 @@
                   <tbody>
                     <tr v-for="visite in visites" :key="visite.id">
                       <td>{{visite.id}}</td>
-                      <td>{{visite.client_id}}</td>
-                      <td>{{visite.appartement_id}}</td>
-                      <td>{{getPostBody(visite.remarque_client)}}</td>
+                      <td>{{visite.nom}} {{visite.prenom1}}</td>
+                      <td>{{visite.appartement_immeuble}}</td>
+                      <td>{{truncate(visite.remarque_client,25)}}</td>
                       <td><span class="tag tag-success">{{convert(visite.created_at)}}</span></td>
                       <td>
                           <button @click="editVisite(visite.id)" class="btn btn-success btn-sm">Edit</button>
@@ -115,14 +115,10 @@
             }
         },
         methods:{
-            getPostBody (post) {
-                //let body = this.stripTags(post.body);
-                
-                return post.length > 5 ? post.substring(0, 300) + '...' : post;           
+            truncate(str, n){
+                return (str.length > n) ? str.substr(0, n-1) + '...' : str;
             },
-            /*stripTags (text) {
-                return text.replace(/(<([^>]+)>)/ig, '');
-            },*/
+          
             convert(jour){
                 let  date =  new Date(jour);
                 return  date.toDateString() // "sun nov 29 2020 "

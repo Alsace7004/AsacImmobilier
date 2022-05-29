@@ -3407,12 +3407,213 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {};
+    return {
+      promesseventes: [],
+      payements: [],
+      payement: {
+        promesse_vente_id: '',
+        prix_payer: ''
+      },
+      edit_id: '',
+      is_Editing: false
+    };
   },
-  methods: {},
-  created: function created() {},
+  methods: {
+    convert: function convert(jour) {
+      var date = new Date(jour);
+      return date.toDateString(); // "sun nov 29 2020 "
+    },
+    newModal: function newModal() {
+      this.payement = {
+        promesse_vente_id: '',
+        prix_payer: ''
+      };
+      this.is_Editing = false;
+      $('#addNew').modal('show');
+    },
+    createPayement: function createPayement() {
+      var _this = this;
+
+      var pp = document.querySelector("#prix_payer").value;
+      var pvi = document.querySelector("#promesse_vente_id").value;
+
+      if (pp == "" || pvi == "") {
+        Toast.fire({
+          icon: 'error',
+          title: 'veuillez remplir tous les champs !!!'
+        });
+        return;
+      }
+
+      axios.post("api/payements", this.payement).then(function () {
+        //$('#addNew').modal('hide'); 
+        Swal.fire('Created!', 'Payements Ajouter avec success.', 'success');
+
+        _this.loadPayements();
+
+        _this.payement = {
+          promesse_vente_id: '',
+          prix_payer: ''
+        };
+      })["catch"](function (err) {
+        Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+      });
+    },
+    loadPromesseVentesCIA: function loadPromesseVentesCIA() {
+      var _this2 = this;
+
+      axios.get('api/clientIA').then(function (promesseventes) {
+        _this2.promesseventes = promesseventes.data;
+      });
+    },
+    loadPayements: function loadPayements() {
+      var _this3 = this;
+
+      axios.get('api/payements').then(function (payements) {
+        _this3.payements = payements.data;
+      });
+    },
+    deletePayement: function deletePayement(id) {
+      var _this4 = this;
+
+      Swal.fire({
+        title: 'Etes vous sûr???',
+        text: "Pas de récuperation possible!!!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, supprimer le'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          axios["delete"]("api/payements/".concat(id)).then(function () {
+            Swal.fire('Deleted!', 'Le Payement a été supprimé(e).', 'success');
+
+            _this4.loadPayements();
+          })["catch"](function (err) {
+            Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+          });
+        } else {
+          Swal.fire('Cancelled !!!', 'Votre Payement est toujours disponible !!!', 'error');
+        }
+      }); //first Then
+    },
+    //deletePayement
+    editPayement: function editPayement(id) {
+      var _this5 = this;
+
+      axios.get("api/payements/".concat(id)).then(function (res) {
+        $('#addNew').modal('show');
+        _this5.edit_id = res.data.id;
+        _this5.payement.promesse_vente_id = res.data.promesse_vente_id;
+        _this5.payement.prix_payer = res.data.prix_payer;
+        _this5.is_Editing = true;
+      });
+    },
+    updatePayement: function updatePayement() {
+      var _this6 = this;
+
+      axios.put("api/payements/".concat(this.edit_id), this.payement).then(function () {
+        $('#addNew').modal('hide');
+        Swal.fire('Updated!', 'Payement mise à jour avec success.', 'success');
+
+        _this6.loadPayements();
+
+        _this6.edit_id = "";
+        _this6.is_Editing = false;
+      })["catch"](function (err) {
+        Swal.fire('Error !!!', "Une Erreur Survenue !!!", 'error');
+      });
+    }
+  },
+  created: function created() {
+    this.loadPayements();
+    this.loadPromesseVentesCIA();
+  },
   mounted: function mounted() {
     console.log('Component mounted.');
   }
@@ -3489,12 +3690,341 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {};
+    return {
+      clients: [],
+      appartements: [],
+      promesseventes: [],
+      promessevente: {
+        client_id: '',
+        appartement_id: '',
+        tauxTVA: '20',
+        prixVenteDefinitifHT: '',
+        prixVenteDefinitifTTC: '2',
+        avance: '2500',
+        etat: '11'
+      },
+      edit_id: '',
+      is_Editing: false
+    };
   },
-  methods: {},
-  created: function created() {},
+  methods: {
+    convert: function convert(jour) {
+      var date = new Date(jour);
+      return date.toDateString(); // "sun nov 29 2020 "
+    },
+    newModal: function newModal() {
+      this.promessevente = {
+        client_id: '',
+        appartement_id: '',
+        tauxTVA: '20',
+        prixVenteDefinitifHT: '',
+        prixVenteDefinitifTTC: '0',
+        avance: '',
+        etat: "10"
+      };
+      this.is_Editing = false;
+      $('#addNew').modal('show');
+    },
+    loadClients: function loadClients() {
+      var _this = this;
+
+      axios.get('api/clients').then(function (clients) {
+        _this.clients = clients.data;
+      });
+    },
+    loadAppartements: function loadAppartements() {
+      var _this2 = this;
+
+      axios.get('api/appartements').then(function (appartements) {
+        _this2.appartements = appartements.data;
+      });
+    },
+    loadPromesseVentes: function loadPromesseVentes() {
+      var _this3 = this;
+
+      axios.get('api/promesseVentes').then(function (promesseventes) {
+        _this3.promesseventes = promesseventes.data;
+      });
+    },
+    createPromesseVente: function createPromesseVente() {
+      var _this4 = this;
+
+      var cid = document.querySelector("#client_id").value;
+      var ap = document.querySelector("#appartement_id").value;
+      var tva = document.querySelector("#tauxTVA").value;
+      var ht = document.querySelector("#prixVenteDefinitifHT").value;
+      var av = document.querySelector("#avance").value;
+
+      if (cid == "" || ap == "" || tva == "" || ht == "" || av == "") {
+        Toast.fire({
+          icon: 'error',
+          title: 'veuillez remplir tous les champs !!!'
+        });
+        return;
+      }
+
+      axios.post("api/promesseVentes", this.promessevente).then(function () {
+        //$('#addNew').modal('hide'); 
+        Swal.fire('Created!', 'Promesse de vente Ajouter avec success.', 'success');
+
+        _this4.loadPromesseVentes();
+
+        _this4.promessevente = {
+          client_id: '',
+          appartement_id: '',
+          tauxTVA: '',
+          prixVenteDefinitifHT: '',
+          prixVenteDefinitifTTC: '',
+          avance: '',
+          etat: ''
+        };
+      })["catch"](function (err) {
+        /*console.log('valeur de la err.response:',err.response.data.Message)
+        console.log('valeur de la err.response:',err.response.data.AvancePermis)*/
+        Swal.fire('Error !!!', "Une Erreur Survenue !!! \n\n ".concat(err.response.data.Message, " \n\n L'avance doit etre >= ").concat(err.response.data.AvancePermis, " XOF "), 'error');
+      });
+    },
+    deletePromesseVente: function deletePromesseVente(id) {
+      var _this5 = this;
+
+      Swal.fire({
+        title: 'Etes vous sûr???',
+        text: "Pas de récuperation possible!!!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, supprimer le'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          axios["delete"]("api/promesseVentes/".concat(id)).then(function () {
+            Swal.fire('Deleted!', 'La Promesse de vente a été supprimé(e).', 'success');
+
+            _this5.loadPromesseVentes();
+          })["catch"](function (err) {
+            Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+          });
+        } else {
+          Swal.fire('Cancelled !!!', 'Votre Promesse de vente est toujours disponible !!!', 'error');
+        }
+      }); //first Then
+    },
+    //deletePromesseVente
+    editPromesseVente: function editPromesseVente(id) {
+      var _this6 = this;
+
+      axios.get("api/promesseVentes/".concat(id)).then(function (res) {
+        $('#addNew').modal('show');
+        _this6.edit_id = res.data.id;
+        _this6.promessevente.client_id = res.data.client_id;
+        _this6.promessevente.appartement_id = res.data.appartement_id;
+        _this6.promessevente.tauxTVA = res.data.tauxTVA;
+        _this6.promessevente.prixVenteDefinitifHT = res.data.prixVenteDefinitifHT;
+        _this6.promessevente.prixVenteDefinitifTTC = res.data.prixVenteDefinitifTTC;
+        _this6.promessevente.avance = res.data.avance;
+        _this6.promessevente.etat = res.data.etat;
+        _this6.is_Editing = true;
+      });
+    },
+    updatePromesseVente: function updatePromesseVente() {
+      var _this7 = this;
+
+      axios.put("api/promesseVentes/".concat(this.edit_id), this.promessevente).then(function () {
+        $('#addNew').modal('hide');
+        Swal.fire('Updated!', 'Promesse de vente mise à jour avec success.', 'success');
+
+        _this7.loadPromesseVentes();
+
+        _this7.edit_id = "";
+        _this7.is_Editing = false;
+      })["catch"](function (err) {
+        Swal.fire('Error !!!', "Une Erreur Survenue !!! \n\n ".concat(err.response.data.Message, " \n\n L'avance doit etre >= ").concat(err.response.data.AvancePermis, " XOF "), 'error');
+      });
+    },
+    payPromesseVente: function payPromesseVente(id) {
+      var _this8 = this;
+
+      alert(id);
+      axios.post("api/promesseVentePayements/".concat(id), this.promessevente).then(function () {
+        //$('#addNew').modal('hide'); 
+        Swal.fire('Created!', 'Payement de vente Ajouter avec success.', 'success');
+
+        _this8.loadPromesseVentes();
+
+        _this8.promessevente = {
+          client_id: '',
+          appartement_id: '',
+          tauxTVA: '',
+          prixVenteDefinitifHT: '',
+          prixVenteDefinitifTTC: '',
+          avance: '',
+          etat: ''
+        };
+      })["catch"](function (err) {
+        Swal.fire('Error !!!', "Une Erreur Survenue !!! \n\n ".concat(err.response.data.message), 'error');
+      });
+    }
+  },
+  created: function created() {
+    this.loadClients();
+    this.loadAppartements();
+    this.loadPromesseVentes();
+  },
   mounted: function mounted() {
     console.log('Component mounted.');
   }
@@ -3763,14 +4293,9 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    getPostBody: function getPostBody(post) {
-      //let body = this.stripTags(post.body);
-      return post.length > 5 ? post.substring(0, 300) + '...' : post;
+    truncate: function truncate(str, n) {
+      return str.length > n ? str.substr(0, n - 1) + '...' : str;
     },
-
-    /*stripTags (text) {
-        return text.replace(/(<([^>]+)>)/ig, '');
-    },*/
     convert: function convert(jour) {
       var date = new Date(jour);
       return date.toDateString(); // "sun nov 29 2020 "
@@ -46746,7 +47271,274 @@ var render = function () {
     [
       _c("page-title", { attrs: { title: "Les payements" } }),
       _vm._v(" "),
-      _vm._m(0),
+      _c("div", { staticClass: "d-flex justify-content-end" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success btn-sm mb-3",
+            attrs: { "data-toggle": "modal", "data-target": "#addNew" },
+            on: { click: _vm.newModal },
+          },
+          [_vm._v("Ajouter")]
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-12" }, [
+          _c("div", { staticClass: "card" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "card-body table-responsive p-0",
+                staticStyle: { height: "300px" },
+              },
+              [
+                _c(
+                  "table",
+                  { staticClass: "table table-head-fixed text-nowrap" },
+                  [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.payements, function (payement) {
+                        return _c("tr", { key: payement.id }, [
+                          _c("td", [_vm._v(_vm._s(payement.id))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(payement.prix_payer))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(payement.appartement_immeuble)),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("span", { staticClass: "tag tag-success" }, [
+                              _vm._v(_vm._s(_vm.convert(payement.created_at))),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-success btn-sm",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.editPayement(payement.id)
+                                  },
+                                },
+                              },
+                              [_vm._v("Edit")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-danger btn-sm",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.deletePayement(payement.id)
+                                  },
+                                },
+                              },
+                              [_vm._v("Delete")]
+                            ),
+                          ]),
+                        ])
+                      }),
+                      0
+                    ),
+                  ]
+                ),
+              ]
+            ),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "addNew",
+            tabindex: "-1",
+            "aria-labelledby": "exampleModalLabel",
+            "aria-hidden": "true",
+          },
+        },
+        [
+          _c("div", { staticClass: "modal-dialog" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title",
+                    attrs: { id: "exampleModalLabel" },
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(
+                        _vm.is_Editing ? "Update Payement" : "Add New Payement"
+                      )
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(2),
+              ]),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function ($event) {
+                      $event.preventDefault()
+                      _vm.is_Editing
+                        ? _vm.updatePayement()
+                        : _vm.createPayement()
+                    },
+                  },
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-12" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.payement.prix_payer,
+                                expression: "payement.prix_payer",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              id: "prix_payer",
+                              placeholder: "Montant à payer...",
+                            },
+                            domProps: { value: _vm.payement.prix_payer },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.payement,
+                                  "prix_payer",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.payement.promesse_vente_id,
+                                  expression: "payement.promesse_vente_id",
+                                },
+                              ],
+                              staticClass: "form-control",
+                              attrs: { id: "promesse_vente_id" },
+                              on: {
+                                change: function ($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function (o) {
+                                      return o.selected
+                                    })
+                                    .map(function (o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.payement,
+                                    "promesse_vente_id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                },
+                              },
+                            },
+                            [
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    value: "",
+                                    hidden: "",
+                                    selected: "",
+                                  },
+                                },
+                                [_vm._v("Selectionner une promesse vente")]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(
+                                _vm.promesseventes,
+                                function (promessevente) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: promessevente.id,
+                                      domProps: { value: promessevente.id },
+                                    },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          promessevente.client_appartement_immeuble
+                                        )
+                                      ),
+                                    ]
+                                  )
+                                }
+                              ),
+                            ],
+                            2
+                          ),
+                        ]),
+                      ]),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", "data-dismiss": "modal" },
+                      },
+                      [_vm._v("Close")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" },
+                      },
+                      [_vm._v(_vm._s(_vm.is_Editing ? "Update" : "Create"))]
+                    ),
+                  ]),
+                ]
+              ),
+            ]),
+          ]),
+        ]
+      ),
     ],
     1
   )
@@ -46756,21 +47548,72 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8 mt-5" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v("Payements Component"),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _vm._v(
-              "\n                    I'm an Payements component.\n                "
-            ),
-          ]),
-        ]),
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Liste des Payements")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-tools" }, [
+        _c(
+          "div",
+          {
+            staticClass: "input-group input-group-sm",
+            staticStyle: { width: "150px" },
+          },
+          [
+            _c("input", {
+              staticClass: "form-control float-right",
+              attrs: {
+                type: "text",
+                name: "table_search",
+                placeholder: "Search",
+              },
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group-append" }, [
+              _c(
+                "button",
+                { staticClass: "btn btn-default", attrs: { type: "submit" } },
+                [_c("i", { staticClass: "fas fa-search" })]
+              ),
+            ]),
+          ]
+        ),
       ]),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Montant")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Promesse Vente")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Created_at")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Actions")]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close",
+        },
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   },
 ]
 render._withStripped = true
@@ -46856,7 +47699,620 @@ var render = function () {
     [
       _c("page-title", { attrs: { title: "Les promesses de vente" } }),
       _vm._v(" "),
-      _vm._m(0),
+      _c("div", { staticClass: "d-flex justify-content-end" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success btn-sm mb-3",
+            attrs: { "data-toggle": "modal", "data-target": "#addNew" },
+            on: { click: _vm.newModal },
+          },
+          [_vm._v("Ajouter")]
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-12" }, [
+          _c("div", { staticClass: "card" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "card-body table-responsive p-0",
+                staticStyle: { height: "300px" },
+              },
+              [
+                _c(
+                  "table",
+                  { staticClass: "table table-head-fixed text-nowrap" },
+                  [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      [
+                        _vm._l(_vm.promesseventes, function (promessevente) {
+                          return _c("tr", { key: promessevente.id }, [
+                            _c("td", [_vm._v(_vm._s(promessevente.id))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(_vm._s(promessevente.tauxTVA) + "%"),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(promessevente.prixVenteDefinitifHT) +
+                                  " XOF"
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(promessevente.prixVenteDefinitifTTC) +
+                                  " XOF"
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(_vm._s(promessevente.avance) + " XOF"),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(
+                                  promessevente.prixVenteDefinitifTTC -
+                                    promessevente.avance >
+                                    0
+                                    ? promessevente.prixVenteDefinitifTTC -
+                                        promessevente.avance
+                                    : "0"
+                                ) + " XOF"
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(promessevente.appartement_immeuble)
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(promessevente.nom) +
+                                  " " +
+                                  _vm._s(promessevente.prenom1)
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("span", { staticClass: "tag tag-success" }, [
+                                _vm._v(
+                                  _vm._s(_vm.convert(promessevente.created_at))
+                                ),
+                              ]),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-primary btn-sm",
+                                  attrs: {
+                                    "data-toggle": "modal",
+                                    "data-target": "#addNewPay",
+                                  },
+                                },
+                                [_vm._v("Pay")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-success btn-sm",
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.editPromesseVente(
+                                        promessevente.id
+                                      )
+                                    },
+                                  },
+                                },
+                                [_vm._v("Edit")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-danger btn-sm",
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.deletePromesseVente(
+                                        promessevente.id
+                                      )
+                                    },
+                                  },
+                                },
+                                [_vm._v("Delete")]
+                              ),
+                            ]),
+                          ])
+                        }),
+                        _vm._v(" "),
+                        _c(
+                          "div",
+                          {
+                            staticClass: "modal fade",
+                            attrs: {
+                              id: "addNewPay",
+                              tabindex: "-1",
+                              "aria-labelledby": "exampleModalLabel",
+                              "aria-hidden": "true",
+                            },
+                          },
+                          [
+                            _c("div", { staticClass: "modal-dialog" }, [
+                              _c("div", { staticClass: "modal-content" }, [
+                                _vm._m(2),
+                                _vm._v(" "),
+                                _c(
+                                  "form",
+                                  {
+                                    on: {
+                                      submit: function ($event) {
+                                        $event.preventDefault()
+                                        return _vm.payPromesseVente(
+                                          _vm.promessevente.id
+                                        )
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _c("div", { staticClass: "modal-body" }, [
+                                      _c("div", { staticClass: "row" }, [
+                                        _c(
+                                          "div",
+                                          { staticClass: "form-group" },
+                                          [
+                                            _c("input", {
+                                              directives: [
+                                                {
+                                                  name: "model",
+                                                  rawName: "v-model",
+                                                  value:
+                                                    _vm.promessevente.avance,
+                                                  expression:
+                                                    "promessevente.avance",
+                                                },
+                                              ],
+                                              staticClass: "form-control",
+                                              attrs: {
+                                                type: "text",
+                                                id: "avance",
+                                                placeholder:
+                                                  "Montant payement...",
+                                              },
+                                              domProps: {
+                                                value: _vm.promessevente.avance,
+                                              },
+                                              on: {
+                                                input: function ($event) {
+                                                  if ($event.target.composing) {
+                                                    return
+                                                  }
+                                                  _vm.$set(
+                                                    _vm.promessevente,
+                                                    "avance",
+                                                    $event.target.value
+                                                  )
+                                                },
+                                              },
+                                            }),
+                                          ]
+                                        ),
+                                      ]),
+                                    ]),
+                                    _vm._v(" "),
+                                    _vm._m(3),
+                                  ]
+                                ),
+                              ]),
+                            ]),
+                          ]
+                        ),
+                      ],
+                      2
+                    ),
+                  ]
+                ),
+              ]
+            ),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "addNew",
+            tabindex: "-1",
+            "aria-labelledby": "exampleModalLabel",
+            "aria-hidden": "true",
+          },
+        },
+        [
+          _c("div", { staticClass: "modal-dialog" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title",
+                    attrs: { id: "exampleModalLabel" },
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(
+                        _vm.is_Editing
+                          ? "Update Promesse de vente"
+                          : "Add New Promesse de vente"
+                      )
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(4),
+              ]),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function ($event) {
+                      $event.preventDefault()
+                      _vm.is_Editing
+                        ? _vm.updatePromesseVente()
+                        : _vm.createPromesseVente()
+                    },
+                  },
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-12" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.promessevente.tauxTVA,
+                                expression: "promessevente.tauxTVA",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              id: "tauxTVA",
+                              placeholder: "TVA de la promesse de vente...",
+                            },
+                            domProps: { value: _vm.promessevente.tauxTVA },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.promessevente,
+                                  "tauxTVA",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-6" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.promessevente.prixVenteDefinitifHT,
+                                expression:
+                                  "promessevente.prixVenteDefinitifHT",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              id: "prixVenteDefinitifHT",
+                              placeholder:
+                                "Prix Hors Taxe de la promesse de vente...",
+                            },
+                            domProps: {
+                              value: _vm.promessevente.prixVenteDefinitifHT,
+                            },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.promessevente,
+                                  "prixVenteDefinitifHT",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.promessevente.avance,
+                                expression: "promessevente.avance",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              id: "avance",
+                              placeholder: "Avance à payer...",
+                            },
+                            domProps: { value: _vm.promessevente.avance },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.promessevente,
+                                  "avance",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-6" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.promessevente.client_id,
+                                  expression: "promessevente.client_id",
+                                },
+                              ],
+                              staticClass: "form-control",
+                              attrs: { id: "client_id" },
+                              on: {
+                                change: function ($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function (o) {
+                                      return o.selected
+                                    })
+                                    .map(function (o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.promessevente,
+                                    "client_id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                },
+                              },
+                            },
+                            [
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    value: "",
+                                    hidden: "",
+                                    selected: "",
+                                  },
+                                },
+                                [_vm._v("Selectionner le client")]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(_vm.clients, function (client) {
+                                return _c(
+                                  "option",
+                                  {
+                                    key: client.id,
+                                    domProps: { value: client.id },
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(client.nom) +
+                                        " " +
+                                        _vm._s(client.prenom1)
+                                    ),
+                                  ]
+                                )
+                              }),
+                            ],
+                            2
+                          ),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.promessevente.appartement_id,
+                                  expression: "promessevente.appartement_id",
+                                },
+                              ],
+                              staticClass: "form-control",
+                              attrs: { id: "appartement_id" },
+                              on: {
+                                change: function ($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function (o) {
+                                      return o.selected
+                                    })
+                                    .map(function (o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.promessevente,
+                                    "appartement_id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                },
+                              },
+                            },
+                            [
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    value: "",
+                                    hidden: "",
+                                    selected: "",
+                                  },
+                                },
+                                [_vm._v("Selectionner un Appart")]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(_vm.appartements, function (appartement) {
+                                return _c(
+                                  "option",
+                                  {
+                                    key: appartement.id,
+                                    domProps: { value: appartement.id },
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(appartement.appartement_immeuble)
+                                    ),
+                                  ]
+                                )
+                              }),
+                            ],
+                            2
+                          ),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-12" }, [
+                        _vm.is_Editing
+                          ? _c("div", [
+                              _c("div", { staticClass: "form-group" }, [
+                                _c(
+                                  "select",
+                                  {
+                                    directives: [
+                                      {
+                                        name: "model",
+                                        rawName: "v-model",
+                                        value: _vm.promessevente.etat,
+                                        expression: "promessevente.etat",
+                                      },
+                                    ],
+                                    staticClass: "form-control",
+                                    attrs: { id: "etat", name: "" },
+                                    on: {
+                                      change: function ($event) {
+                                        var $$selectedVal =
+                                          Array.prototype.filter
+                                            .call(
+                                              $event.target.options,
+                                              function (o) {
+                                                return o.selected
+                                              }
+                                            )
+                                            .map(function (o) {
+                                              var val =
+                                                "_value" in o
+                                                  ? o._value
+                                                  : o.value
+                                              return val
+                                            })
+                                        _vm.$set(
+                                          _vm.promessevente,
+                                          "etat",
+                                          $event.target.multiple
+                                            ? $$selectedVal
+                                            : $$selectedVal[0]
+                                        )
+                                      },
+                                    },
+                                  },
+                                  [
+                                    _c("option", { attrs: { value: "" } }, [
+                                      _vm._v("Status de Promesse Vente"),
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("option", { attrs: { value: "1" } }, [
+                                      _vm._v("En Cours"),
+                                    ]),
+                                    _vm._v(" "),
+                                    _c("option", { attrs: { value: "0" } }, [
+                                      _vm._v("Annuler"),
+                                    ]),
+                                  ]
+                                ),
+                              ]),
+                            ])
+                          : _vm._e(),
+                      ]),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", "data-dismiss": "modal" },
+                      },
+                      [_vm._v("Close")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" },
+                      },
+                      [_vm._v(_vm._s(_vm.is_Editing ? "Update" : "Create"))]
+                    ),
+                  ]),
+                ]
+              ),
+            ]),
+          ]),
+        ]
+      ),
     ],
     1
   )
@@ -46866,21 +48322,130 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8 mt-5" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v("Promesse Ventes Component"),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _vm._v(
-              "\n                    I'm an Promesse Vente component.\n                "
-            ),
-          ]),
-        ]),
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [
+        _vm._v("Liste des Promesses de vente"),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-tools" }, [
+        _c(
+          "div",
+          {
+            staticClass: "input-group input-group-sm",
+            staticStyle: { width: "150px" },
+          },
+          [
+            _c("input", {
+              staticClass: "form-control float-right",
+              attrs: {
+                type: "text",
+                name: "table_search",
+                placeholder: "Search",
+              },
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group-append" }, [
+              _c(
+                "button",
+                { staticClass: "btn btn-default", attrs: { type: "submit" } },
+                [_c("i", { staticClass: "fas fa-search" })]
+              ),
+            ]),
+          ]
+        ),
       ]),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("TauxTVA")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Prix_HT")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Prix_TTC")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Avance")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Rest à payer")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Appartements")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Clients")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Created_at")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Actions")]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-header" }, [
+      _c(
+        "h5",
+        { staticClass: "modal-title", attrs: { id: "exampleModalLabel" } },
+        [_vm._v("Ajouter un Payement")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "close",
+          attrs: {
+            type: "button",
+            "data-dismiss": "modal",
+            "aria-label": "Close",
+          },
+        },
+        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "modal-footer" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" },
+        },
+        [_vm._v("Close")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        { staticClass: "btn btn-primary", attrs: { type: "submit" } },
+        [_vm._v("Add")]
+      ),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close",
+        },
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   },
 ]
 render._withStripped = true
@@ -47148,13 +48713,19 @@ var render = function () {
                         return _c("tr", { key: visite.id }, [
                           _c("td", [_vm._v(_vm._s(visite.id))]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(visite.client_id))]),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(visite.nom) + " " + _vm._s(visite.prenom1)
+                            ),
+                          ]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(visite.appartement_id))]),
+                          _c("td", [
+                            _vm._v(_vm._s(visite.appartement_immeuble)),
+                          ]),
                           _vm._v(" "),
                           _c("td", [
                             _vm._v(
-                              _vm._s(_vm.getPostBody(visite.remarque_client))
+                              _vm._s(_vm.truncate(visite.remarque_client, 25))
                             ),
                           ]),
                           _vm._v(" "),

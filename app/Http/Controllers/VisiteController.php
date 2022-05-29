@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Visite;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class VisiteController extends Controller
 {
@@ -15,7 +16,14 @@ class VisiteController extends Controller
     public function index()
     {
         //
-        $visites = Visite::all();
+        //$visites = Visite::all();
+        $visites = DB::SELECT("SELECT 
+        visites.id,visites.created_at,visites.remarque_client,
+        clients.nom,clients.prenom1,
+        CONCAT(appartements.numero,' / ',immeubles.nom) as appartement_immeuble,
+        appartements.numero 
+        FROM `visites`,clients,appartements,immeubles 
+        WHERE visites.client_id=clients.id and visites.appartement_id = appartements.id and appartements.immeuble_id=immeubles.id");
         return $visites;
     }
 
