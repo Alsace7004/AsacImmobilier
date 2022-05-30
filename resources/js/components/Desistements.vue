@@ -149,7 +149,13 @@
                         causes_annulation:''
                     }
                 }).catch((err)=>{
-                    Swal.fire('Error !!!','Une Erreur Survenue !!!','error')
+                    //Swal.fire('Error !!!','Une Erreur Survenue !!!','error')
+                           if(err.response.data.errors.promesse_vente_id){
+                                //Swal.fire('Error !!!',`Ce desistement existe déjà ${err.response.data.errors.promesse_vente_id}`,'error')
+                                Swal.fire('Error !!!',`Ce desistement existe déjà`,'error')
+                            }else{
+                                    Swal.fire('Error !!!',`Une erreur est survenue`,'error')
+                            }
                 })
             },
             deleteDesistement(id){

@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\DB;
 
 class SignatureController extends Controller
 {
+    public function signatureCount(){
+        $nbr_signatures = DB::SELECT('SELECT COUNT(*) as nbr_total_signature FROM signatures');
+        return $nbr_signatures;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -42,7 +46,7 @@ class SignatureController extends Controller
         //
         $data = $request->validate([
             'avocat_id'=>'required|integer',
-            'promesse_vente_id'=>'required|integer',
+            'promesse_vente_id'=>'required|integer|unique:signatures,promesse_vente_id',
             'signaturePromesseAcquereur'=>'required|string',
             'signaturePromesseDirecteurCommercial'=>'required|string'
         ]);

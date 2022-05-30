@@ -254,7 +254,8 @@
                    if(err.response.data.Message){
                        Swal.fire('Error !!!',`Une Erreur Survenue !!! \n\n ${err.response.data.Message} \n\n L'avance doit etre >= ${err.response.data.AvancePermis} XOF `,'error')
                    }else if(err.response.data.errors.appartement_id){
-                        Swal.fire('Error !!!',`Cette appartement est deja pris :${err.response.data.errors.appartement_id}`,'error')
+                        //Swal.fire('Error !!!',`Cette appartement est deja pris :${err.response.data.errors.appartement_id}`,'error')
+                        Swal.fire('Error !!!',`Cette appartement est déjà pris`,'error')
                    }else if(err.response.message){
                         Swal.fire('Error !!!',`duplication de user pas possible`,'error')
                    }else{
@@ -341,7 +342,10 @@
                         etat:'',
                     }
                 }).catch((err)=>{
-                    Swal.fire('Avertissement !!!',`Une Erreur Survenue !!! \n\n ${err.response.data.message} XOF `,'warning');
+                    Swal.fire('Avertissement !!!',`${err.response.data.message}`,'warning');
+                    //$('#addNewPay').modal('hide'); 
+                    this.loadPromesseVentes();
+                    this.promessevente.avance='';
                 })
             }
         },

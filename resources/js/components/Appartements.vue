@@ -145,11 +145,11 @@
                     immeuble_id:'',
                     numero_etage:'',
                     numero_appartement:'',
-                    numero:'0',
+                    numero:'ok',
                     superficie:'',
                     nbr_chambre:'',
                     prix_previsionnel:'',
-                    type:''
+                    type:'ok'
                 },
                 
                 edit_id:'',
@@ -171,11 +171,11 @@
                         immeuble_id:'',
                         numero_etage:'',
                         numero_appartement:'',
-                        numero:'369',
+                        numero:'ok',
                         superficie:'',
                         nbr_chambre:'',
                         prix_previsionnel:'',
-                        type:'9'
+                        type:'ok'
                     }
                 this.is_Editing = false;
                 $('#addNew').modal('show');
@@ -204,11 +204,11 @@
                         immeuble_id:'',
                         numero_etage:'',
                         numero_appartement:'',
-                        numero:'',
+                        numero:'ok',
                         superficie:'',
                         nbr_chambre:'',
                         prix_previsionnel:'',
-                        type:''
+                        type:'ok'
                     }
                 }).catch((err)=>{
                     Swal.fire('Error !!!','Une Erreur Survenue !!!','error')

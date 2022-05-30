@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\DB;
 
 class PayementController extends Controller
 {
+    public function payementCount(){
+        $nbr_payements = DB::SELECT('SELECT COUNT(*) as nbr_total_payement FROM payements');
+        return $nbr_payements;
+    }
     public function clientImmeubleAppartement(){
         $payements = DB::SELECT("SELECT promesse_ventes.id, CONCAT(clients.nom,' ',clients.prenom1,'/',appartements.numero,'/',immeubles.nom) as client_appartement_immeuble FROM `promesse_ventes`,clients,appartements,immeubles WHERE promesse_ventes.client_id = clients.id and promesse_ventes.appartement_id=appartements.id and appartements.immeuble_id=immeubles.id");
         return $payements;

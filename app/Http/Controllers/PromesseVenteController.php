@@ -9,6 +9,10 @@ use Illuminate\Support\Facades\DB;
 
 class PromesseVenteController extends Controller
 {
+    public function promesseventeCount(){
+        $nbr_promesseventes = DB::SELECT('SELECT COUNT(*) as nbr_total_promessevente FROM promesse_ventes');
+        return $nbr_promesseventes;
+    }
     /**
      * Display a listing of the resource.
      *

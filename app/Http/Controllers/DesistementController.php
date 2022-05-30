@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\DB;
 
 class DesistementController extends Controller
 {
+    public function desistementCount(){
+        $nbr_desistements = DB::SELECT('SELECT COUNT(*) as nbr_total_desistement FROM desistements');
+        return $nbr_desistements;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -42,7 +46,7 @@ class DesistementController extends Controller
     {
         //
         $data = $request->validate([
-            'promesse_vente_id'=>'required|integer',
+            'promesse_vente_id'=>'required|integer|unique:desistements,promesse_vente_id',
             'causes_annulation'=>'required|string',
             'numero'=>'required|string'
         ]);

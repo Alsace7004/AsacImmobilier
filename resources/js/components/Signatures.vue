@@ -69,9 +69,6 @@
                     </div>
                     <form @submit.prevent="is_Editing ? updateSignature() : createSignature()" enctype="multipart/form-data">
                         <div class="modal-body">
-                            
-                            <div class="row">
-                                <div class="col-md-6">
                                      <div class="form-group">
                                         <select  v-model="signature.avocat_id" id="avocat_id" class="form-control">
                                             <option value="" hidden selected>Selectionner l'Avocat</option>
@@ -84,19 +81,6 @@
                                             <option v-for="promessevente in promesseventes" :key="promessevente.id" :value="promessevente.id" >{{promessevente.client_appartement_immeuble}}</option>
                                         </select>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <input type="file" ref="signaturePromesseAcquereur" id="signaturePromesseAcquereur" @change="handleFileUpload1()" placeholder="signature de Promesse de l'Acquereur..." class="form-control">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="file" ref="signaturePromesseDirecteurCommercial" id="signaturePromesseDirecteurCommercial" @change="handleFileUpload2()" placeholder="signature de la Promesse du Directeur Commercial..." class="form-control">
-                                    </div>
-                                    
-                                </div>
-                            </div>
-                            
-                            
                         </div>
                     
                         <div class="modal-footer">
@@ -179,7 +163,13 @@
                         signaturePromesseDirecteurCommercial:'0'
                     }
                     }).catch((err)=>{
-                        Swal.fire('Error !!!','Une Erreur Survenue !!!','error')
+                        //Swal.fire('Error !!!','Une Erreur Survenue !!!','error')
+                            if(err.response.data.errors.promesse_vente_id){
+                                //Swal.fire('Error !!!',`Cette Signature existe déjà ${err.response.data.errors.promesse_vente_id}`,'error')
+                                Swal.fire('Error !!!',`Cette Signature existe déjà`,'error')
+                            }else{
+                                Swal.fire('Error !!!',`Une erreur est survenue`,'error')
+                            }
                     });
             },
             deleteSignature(id){

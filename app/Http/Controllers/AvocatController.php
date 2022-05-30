@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Avocat;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class AvocatController extends Controller
 {
+    public function avocatCount(){
+        $nbr_avocats = DB::SELECT('SELECT COUNT(*) as nbr_total_avocat FROM avocats');
+        return $nbr_avocats;
+    }
     /**
      * Display a listing of the resource.
      *

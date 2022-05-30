@@ -47,6 +47,7 @@ class AppartementController extends Controller
             'immeuble_id'=>'required|integer'
         ]);
         $data = $request->all();
+        $data['type']='Disponible';
         $data['numero'] = $data['numero_etage'].'-'.$data['numero_appartement'];
         //$data['type'] =1;
         return Appartement::create($data);

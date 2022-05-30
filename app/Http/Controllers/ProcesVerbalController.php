@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\DB;
 
 class ProcesVerbalController extends Controller
 {
+    public function procesverbalCount(){
+        $nbr_procesverbals = DB::SELECT('SELECT COUNT(*) as nbr_total_procesverbal FROM proces_verbals');
+        return $nbr_procesverbals;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -44,7 +48,7 @@ class ProcesVerbalController extends Controller
         //
         $data = $request->validate([
             'user_id'=>'required|integer',
-            'contrat_vente_definitif_id'=>'required|integer',
+            'contrat_vente_definitif_id'=>'required|integer|unique:proces_verbals,contrat_vente_definitif_id',
             'signature_acquereur'=>'required|string'
         ]);
         $data['user_id'] = 2;

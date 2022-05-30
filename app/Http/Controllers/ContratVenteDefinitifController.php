@@ -8,6 +8,10 @@ use App\Models\ContratVenteDefinitif;
 
 class ContratVenteDefinitifController extends Controller
 {
+    public function contratVenteDefinitifCount(){
+        $nbr_contratVenteDefinitifs = DB::SELECT('SELECT COUNT(*) as nbr_total_contratVenteDefinitif FROM contrat_vente_definitifs');
+        return $nbr_contratVenteDefinitifs;
+    }
     /**
      * Display a listing of the resource.
      *

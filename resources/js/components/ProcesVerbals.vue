@@ -1,7 +1,9 @@
 <template>
     <div class="container">
         <page-title title="Les proces Verbales"/>
-      
+         <div class="d-flex justify-content-end">
+            <button class="btn btn-success btn-sm mb-3" @click="newModal" data-toggle="modal" data-target="#addNew">Ajouter</button>
+        </div>
         <div class="row">
           <div class="col-12">
             <div class="card">
@@ -140,7 +142,13 @@
                         signature_acquereur:'0',
                     }
                     }).catch((err)=>{
-                        Swal.fire('Error !!!','Une Erreur Survenue !!!','error')
+                        //Swal.fire('Error !!!','Une Erreur Survenue !!!','error')
+                            if(err.response.data.errors.contrat_vente_definitif_id){
+                                //Swal.fire('Error !!!',`Ce Proces Verbal existe déjà ${err.response.data.errors.contrat_vente_definitif_id}`,'error')
+                                Swal.fire('Error !!!',`Ce Proces Verbal existe déjà`,'error')
+                            }else{
+                                Swal.fire('Error !!!',`Une erreur est survenue`,'error')
+                            }
                     });
             },
             deleteProcesVerbal(id){

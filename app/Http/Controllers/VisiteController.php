@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\DB;
 
 class VisiteController extends Controller
 {
+    public function visiteCount(){
+        $nbr_visites = DB::SELECT('SELECT COUNT(*) as nbr_total_visite FROM visites');
+        return $nbr_visites;
+    }
     /**
      * Display a listing of the resource.
      *

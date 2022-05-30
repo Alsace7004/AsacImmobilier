@@ -68,7 +68,7 @@
                           <!-- small box -->
                           <div class="small-box bg-info">
                             <div class="inner">
-                              <h3>150</h3>
+                              <h3>{{this.visites}}</h3>
               
                               <p>Visites</p>
                             </div>
@@ -83,7 +83,7 @@
                           <!-- small box -->
                           <div class="small-box bg-success">
                             <div class="inner">
-                              <h3>53<sup style="font-size: 20px">%</sup></h3>
+                              <h3>{{this.promessesventes}}</h3>
               
                               <p>Promesses de vente</p>
                             </div>
@@ -98,7 +98,7 @@
                           <!-- small box -->
                           <div class="small-box bg-warning">
                             <div class="inner">
-                              <h3>44</h3>
+                              <h3>{{this.avocats}}</h3>
               
                               <p>Avocats</p>
                             </div>
@@ -113,7 +113,7 @@
                           <!-- small box -->
                           <div class="small-box bg-danger">
                             <div class="inner">
-                              <h3>65</h3>
+                              <h3>{{this.signatures}}</h3>
               
                               <p>Signatures</p>
                             </div>
@@ -130,7 +130,7 @@
                           <!-- small box -->
                           <div class="small-box bg-info">
                             <div class="inner">
-                              <h3>150</h3>
+                              <h3>{{this.desistements}}</h3>
               
                               <p>Desistements</p>
                             </div>
@@ -145,7 +145,7 @@
                           <!-- small box -->
                           <div class="small-box bg-success">
                             <div class="inner">
-                              <h3>53<sup style="font-size: 20px">%</sup></h3>
+                              <h3>{{this.payements}}</h3>
               
                               <p>Payements</p>
                             </div>
@@ -160,7 +160,7 @@
                           <!-- small box -->
                           <div class="small-box bg-warning">
                             <div class="inner">
-                              <h3>44</h3>
+                              <h3>{{this.contratVenteDefinitifs}}</h3>
               
                               <p>Contrat de vente Definitif</p>
                             </div>
@@ -175,7 +175,7 @@
                           <!-- small box -->
                           <div class="small-box bg-danger">
                             <div class="inner">
-                              <h3>65</h3>
+                              <h3>{{this.procesverbals}}</h3>
               
                               <p>Proces Verbals</p>
                             </div>
@@ -198,6 +198,14 @@
             appartements:'',
             clients:'',
             users:'',
+            visites:'',
+            desistements:'',
+            payements:'',
+            avocats:'',
+            signatures:'',
+            promessesventes:'',
+            procesverbals:'',
+            contratVenteDefinitifs:''
           }
         },
         methods:{
@@ -221,12 +229,60 @@
                   this.users = users.data[0].nbr_total_user;
                 })
             },
+            loadCountVisites(){
+                axios.get('api/visitesNumb').then((visites)=>{
+                  this.visites = visites.data[0].nbr_total_visite;
+                })
+            },
+            loadCountDesistements(){
+                axios.get('api/desistementsNumb').then((desistements)=>{
+                  this.desistements = desistements.data[0].nbr_total_desistement;
+                })
+            },
+            loadCountPayements(){
+                axios.get('api/payementsNumb').then((payements)=>{
+                  this.payements = payements.data[0].nbr_total_payement;
+                })
+            },
+            loadCountAvocats(){
+                axios.get('api/avocatsNumb').then((avocats)=>{
+                  this.avocats = avocats.data[0].nbr_total_avocat;
+                })
+            },
+            loadCountSignatures(){
+                axios.get('api/signaturesNumb').then((signatures)=>{
+                  this.signatures = signatures.data[0].nbr_total_signature;
+                })
+            },
+            loadCountPromesseVentes(){
+                axios.get('api/promesseventesNumb').then((promessesventes)=>{
+                  this.promessesventes = promessesventes.data[0].nbr_total_promessevente;
+                })
+            },
+            loadCountProcesVerbal(){
+                axios.get('api/procesverbalsNumb').then((procesverbals)=>{
+                  this.procesverbals = procesverbals.data[0].nbr_total_procesverbal ;
+                })
+            },
+            loadCountContratVenteDefinitifs(){
+                axios.get('api/contratVenteDefinitifNumb').then((contratVenteDefinitifs)=>{
+                  this.contratVenteDefinitifs = contratVenteDefinitifs.data[0].nbr_total_contratVenteDefinitif;
+                })
+            },
         },
         created(){
           this.loadCountImmeubles();
           this.loadCountAppartements();
           this.loadCountClients();
           this.loadCountUsers();
+          this.loadCountVisites();
+          this.loadCountDesistements();
+          this.loadCountPayements();
+          this.loadCountAvocats();
+          this.loadCountSignatures();
+          this.loadCountPromesseVentes();
+          this.loadCountProcesVerbal();
+          this.loadCountContratVenteDefinitifs();
         },
         mounted() {
             console.log('Component mounted.')
