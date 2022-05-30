@@ -17,8 +17,8 @@ class CreateContratVenteDefinitifsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('avocat_id');
             $table->unsignedBigInteger('promesse_vente_id');
-            $table->unsignedBigInteger('promesse_vente_appartement_id');
-            $table->unsignedBigInteger('promesse_vente_client_id');
+            //$table->unsignedBigInteger('promesse_vente_appartement_id');
+            //$table->unsignedBigInteger('promesse_vente_client_id');
             $table->string('description_appartement');
             $table->double('prix_vente');
             $table->string('type_payement');
@@ -27,8 +27,8 @@ class CreateContratVenteDefinitifsTable extends Migration
 
             $table->foreign('avocat_id')->references('id')->on('avocats')->onUpdate('cascade')->onDelete('cascade');
             $table->foreign('promesse_vente_id')->references('id')->on('promesse_ventes')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('promesse_vente_appartement_id')->references('appartement_id')->on('promesse_ventes')->onUpdate('cascade')->onDelete('cascade');
-            $table->foreign('promesse_vente_client_id')->references('client_id')->on('promesse_ventes')->onUpdate('cascade')->onDelete('cascade');
+            //$table->foreign('promesse_vente_appartement_id')->references('appartement_id')->on('promesse_ventes')->onUpdate('cascade')->onDelete('cascade');
+            //$table->foreign('promesse_vente_client_id')->references('client_id')->on('promesse_ventes')->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });
     }

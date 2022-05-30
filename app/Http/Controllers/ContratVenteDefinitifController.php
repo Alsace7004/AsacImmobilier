@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ContratVenteDefinitif;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\ContratVenteDefinitif;
 
 class ContratVenteDefinitifController extends Controller
 {
@@ -15,7 +16,19 @@ class ContratVenteDefinitifController extends Controller
     public function index()
     {
         //
-        $contratVenteDefinitifs = ContratVenteDefinitif::all();
+        //$contratVenteDefinitifs = ContratVenteDefinitif::all();
+        $contratVenteDefinitifs = DB::SELECT("SELECT 
+        contrat_vente_definitifs.id,contrat_vente_definitifs.prix_vente,
+        contrat_vente_definitifs.type_payement,contrat_vente_definitifs.signature_acquereur,
+        contrat_vente_definitifs.signature_directeur_commercial,contrat_vente_definitifs.description_appartement,
+        contrat_vente_definitifs.created_at,avocats.nom,avocats.prenom,
+        CONCAT(clients.nom,' ',clients.prenom1,'/',appartements.numero,'/',immeubles.nom) as client_appartement_immeuble 
+        FROM contrat_vente_definitifs,avocats,`promesse_ventes`,clients,appartements,immeubles 
+        WHERE contrat_vente_definitifs.avocat_id = avocats.id AND
+                contrat_vente_definitifs.promesse_vente_id= promesse_ventes.id AND
+                promesse_ventes.client_id = clients.id and 
+                promesse_ventes.appartement_id=appartements.id and 
+                appartements.immeuble_id=immeubles.id");
         return $contratVenteDefinitifs;
     }
 
@@ -31,14 +44,16 @@ class ContratVenteDefinitifController extends Controller
         $data = $request->validate([
             'avocat_id'=>'required|integer',
             'promesse_vente_id'=>'required|integer',
-            'promesse_vente_client_id'=>'required|integer',
-            'promesse_vente_appartement_id'=>'required|integer',
+            //'promesse_vente_client_id'=>'required|integer',
+            //'promesse_vente_appartement_id'=>'required|integer',
             'prix_vente'=>'required|numeric',
             'type_payement'=>'required|string',
             'description_appartement'=>'required|string',
             'signature_acquereur'=>'required|string',
             'signature_directeur_commercial'=>'required|string'
         ]);
+        $data['signature_acquereur'] = '@'.uniqid();
+        $data['signature_directeur_commercial'] = '@'.uniqid();
         return ContratVenteDefinitif::create($data);
     }
 
@@ -67,14 +82,16 @@ class ContratVenteDefinitifController extends Controller
         $data = $request->validate([
             'avocat_id'=>'required|integer',
             'promesse_vente_id'=>'required|integer',
-            'promesse_vente_client_id'=>'required|integer',
-            'promesse_vente_appartement_id'=>'required|integer',
+            //'promesse_vente_client_id'=>'required|integer',
+            //'promesse_vente_appartement_id'=>'required|integer',
             'prix_vente'=>'required|numeric',
             'type_payement'=>'required|string',
             'description_appartement'=>'required|string',
             'signature_acquereur'=>'required|string',
             'signature_directeur_commercial'=>'required|string'
         ]);
+        $data['signature_acquereur'] = '@'.uniqid();
+        $data['signature_directeur_commercial'] = '@'.uniqid();
         $contratVenteDefinitif->update($data);
         return $contratVenteDefinitif;
     }

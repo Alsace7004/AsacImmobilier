@@ -73,7 +73,7 @@
                             <div class="row">
                                 <div class="col-md-6">
                                      <div class="form-group">
-                                        <select  v-model="signature.avocat_id" id="client_id" class="form-control">
+                                        <select  v-model="signature.avocat_id" id="avocat_id" class="form-control">
                                             <option value="" hidden selected>Selectionner l'Avocat</option>
                                             <option v-for="avocat in avocats" :key="avocat.id" :value="avocat.id" >{{avocat.nom}} {{avocat.prenom}}</option>
                                         </select>

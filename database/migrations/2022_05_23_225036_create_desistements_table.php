@@ -15,7 +15,7 @@ class CreateDesistementsTable extends Migration
     {
         Schema::create('desistements', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('promesse_vente_id');
+            $table->unsignedBigInteger('promesse_vente_id')->unique();
             $table->string('numero');
             $table->string('causes_annulation');
             $table->foreign('promesse_vente_id')->references('id')->on('promesse_ventes')->onUpdate('cascade')->onDelet('cascade');

@@ -3036,12 +3036,213 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {};
+    return {
+      promesseventes: [],
+      desistements: [],
+      desistement: {
+        promesse_vente_id: '',
+        numero: '',
+        causes_annulation: ''
+      },
+      edit_id: '',
+      is_Editing: false
+    };
   },
-  methods: {},
-  created: function created() {},
+  methods: {
+    truncate: function truncate(str, n) {
+      return str.length > n ? str.substr(0, n - 1) + '...' : str;
+    },
+    convert: function convert(jour) {
+      var date = new Date(jour);
+      return date.toDateString(); // "sun nov 29 2020 "
+    },
+    newModal: function newModal() {
+      this.desistement = {
+        promesse_vente_id: '',
+        numero: '0',
+        causes_annulation: ''
+      };
+      this.is_Editing = false;
+      $('#addNew').modal('show');
+    },
+    loadDesistements: function loadDesistements() {
+      var _this = this;
+
+      axios.get('api/desistements').then(function (desistements) {
+        _this.desistements = desistements.data;
+      });
+    },
+    loadPromesseVentesCIA: function loadPromesseVentesCIA() {
+      var _this2 = this;
+
+      axios.get('api/clientIA').then(function (promesseventes) {
+        _this2.promesseventes = promesseventes.data;
+      });
+    },
+    createDesistement: function createDesistement() {
+      var _this3 = this;
+
+      var pvid = document.querySelector("#promesse_vente_id").value;
+      var ca = document.querySelector("#causes_annulation").value;
+
+      if (pvid == "" || ca == "") {
+        Toast.fire({
+          icon: 'error',
+          title: 'veuillez remplir tous les champs !!!'
+        });
+        return;
+      }
+
+      axios.post("api/desistements", this.desistement).then(function () {
+        //$('#addNew').modal('hide'); 
+        Swal.fire('Created!', 'Desistement Ajouter avec success.', 'success');
+
+        _this3.loadDesistements();
+
+        _this3.desistement = {
+          promesse_vente_id: '',
+          numero: '',
+          causes_annulation: ''
+        };
+      })["catch"](function (err) {
+        Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+      });
+    },
+    deleteDesistement: function deleteDesistement(id) {
+      var _this4 = this;
+
+      Swal.fire({
+        title: 'Etes vous sûr???',
+        text: "Pas de récuperation possible!!!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, supprimer le'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          axios["delete"]("api/desistements/".concat(id)).then(function () {
+            Swal.fire('Deleted!', 'Desistement a été supprimé(e).', 'success');
+
+            _this4.loadDesistements();
+          })["catch"](function (err) {
+            Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+          });
+        } else {
+          Swal.fire('Cancelled !!!', 'Votre Desistement est toujours disponible !!!', 'error');
+        }
+      }); //first Then
+    },
+    //deleteDesistement
+    editDesistement: function editDesistement(id) {
+      var _this5 = this;
+
+      axios.get("api/desistements/".concat(id)).then(function (res) {
+        $('#addNew').modal('show');
+        _this5.edit_id = res.data.id;
+        _this5.desistement.promesse_vente_id = res.data.promesse_vente_id;
+        _this5.desistement.causes_annulation = res.data.causes_annulation;
+        _this5.desistement.numero = res.data.numero;
+        _this5.is_Editing = true;
+      });
+    },
+    updateDesistement: function updateDesistement() {
+      var _this6 = this;
+
+      axios.put("api/desistements/".concat(this.edit_id), this.desistement).then(function () {
+        $('#addNew').modal('hide');
+        Swal.fire('Updated!', 'Desistement mise à jour avec success.', 'success');
+
+        _this6.loadDesistements();
+
+        _this6.edit_id = "";
+        _this6.is_Editing = false;
+      })["catch"](function (err) {
+        Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+      });
+    }
+  },
+  created: function created() {
+    this.loadDesistements();
+    this.loadPromesseVentesCIA();
+  },
   mounted: function mounted() {
     console.log('Component mounted.');
   }
@@ -4697,12 +4898,258 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {};
+    return {
+      avocats: [],
+      promesseventes: [],
+      contratventedefinitifs: [],
+      contratventedefinitif: {
+        avocat_id: '',
+        promesse_vente_id: '',
+        description_appartement: '',
+        prix_vente: '',
+        type_payement: '',
+        signature_acquereur: '0',
+        signature_directeur_commercial: '0'
+      },
+      edit_id: '',
+      is_Editing: false
+    };
   },
-  methods: {},
-  created: function created() {},
+  methods: {
+    truncate: function truncate(str, n) {
+      return str.length > n ? str.substr(0, n - 1) + '...' : str;
+    },
+    convert: function convert(jour) {
+      var date = new Date(jour);
+      return date.toDateString(); // "sun nov 29 2020 "
+    },
+    newModal: function newModal() {
+      this.contratventedefinitif = {
+        avocat_id: '',
+        promesse_vente_id: '',
+        description_appartement: '',
+        prix_vente: '',
+        type_payement: '',
+        signature_acquereur: '0',
+        signature_directeur_commercial: '0'
+      };
+      this.is_Editing = false;
+      $('#addNew').modal('show');
+    },
+    loadAvocats: function loadAvocats() {
+      var _this = this;
+
+      axios.get('api/avocats').then(function (avocats) {
+        _this.avocats = avocats.data;
+      });
+    },
+    loadPromesseVentesCIA: function loadPromesseVentesCIA() {
+      var _this2 = this;
+
+      axios.get('api/clientIA').then(function (promesseventes) {
+        _this2.promesseventes = promesseventes.data;
+      });
+    },
+    loadContratVenteDefinitifs: function loadContratVenteDefinitifs() {
+      var _this3 = this;
+
+      axios.get('api/contratVenteDefinitifs').then(function (contratventedefinitifs) {
+        _this3.contratventedefinitifs = contratventedefinitifs.data;
+      });
+    },
+    createContratVenteDefinitif: function createContratVenteDefinitif() {
+      var _this4 = this;
+
+      axios.post('api/contratVenteDefinitifs', this.contratventedefinitif).then(function () {
+        //$('#addNew').modal('hide'); 
+        Swal.fire('Created!', 'Contrat de vente Ajouter avec success.', 'success');
+
+        _this4.loadContratVenteDefinitifs();
+
+        _this4.contratventedefinitif = {
+          avocat_id: '',
+          promesse_vente_id: '',
+          description_appartement: '',
+          prix_vente: '',
+          type_payement: '',
+          signature_acquereur: '0',
+          signature_directeur_commercial: '0'
+        };
+      })["catch"](function (err) {
+        Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+      });
+    },
+    deleteContratVenteDefinitif: function deleteContratVenteDefinitif(id) {
+      var _this5 = this;
+
+      Swal.fire({
+        title: 'Etes vous sûr???',
+        text: "Pas de récuperation possible!!!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, supprimer le'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          axios["delete"]("api/contratVenteDefinitifs/".concat(id)).then(function () {
+            Swal.fire('Deleted!', 'Le Contrat de vente a été supprimé(e).', 'success');
+
+            _this5.loadContratVenteDefinitifs();
+          })["catch"](function (err) {
+            Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+          });
+        } else {
+          Swal.fire('Cancelled !!!', 'Votre Contrat de vente est toujours disponible !!!', 'error');
+        }
+      }); //first Then
+    },
+    //deleteSignature
+    editContratVenteDefinitif: function editContratVenteDefinitif(id) {
+      var _this6 = this;
+
+      axios.get("api/contratVenteDefinitifs/".concat(id)).then(function (res) {
+        $('#addNew').modal('show');
+        _this6.edit_id = res.data.id;
+        _this6.contratventedefinitif.avocat_id = res.data.avocat_id;
+        _this6.contratventedefinitif.promesse_vente_id = res.data.promesse_vente_id;
+        _this6.contratventedefinitif.description_appartement = res.data.description_appartement;
+        _this6.contratventedefinitif.prix_vente = res.data.prix_vente;
+        _this6.contratventedefinitif.type_payement = res.data.type_payement;
+        _this6.is_Editing = true;
+      });
+    },
+    updateContratVenteDefinitif: function updateContratVenteDefinitif() {
+      var _this7 = this;
+
+      axios.put("api/contratVenteDefinitifs/".concat(this.edit_id), this.contratventedefinitif).then(function () {
+        $('#addNew').modal('hide');
+        Swal.fire('Updated!', 'Contrat de vente mise à jour avec success.', 'success');
+
+        _this7.loadContratVenteDefinitifs();
+
+        _this7.edit_id = "";
+        _this7.is_Editing = false;
+      })["catch"](function (err) {
+        Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+      });
+    }
+  },
+  created: function created() {
+    this.loadAvocats();
+    this.loadPromesseVentesCIA();
+    this.loadContratVenteDefinitifs();
+  },
   mounted: function mounted() {
     console.log('Component mounted.');
   }
@@ -46955,7 +47402,277 @@ var render = function () {
     [
       _c("page-title", { attrs: { title: "Les Desistements" } }),
       _vm._v(" "),
-      _vm._m(0),
+      _c("div", { staticClass: "d-flex justify-content-end" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success btn-sm mb-3",
+            attrs: { "data-toggle": "modal", "data-target": "#addNew" },
+            on: { click: _vm.newModal },
+          },
+          [_vm._v("Ajouter")]
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-12" }, [
+          _c("div", { staticClass: "card" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "card-body table-responsive p-0",
+                staticStyle: { height: "300px" },
+              },
+              [
+                _c(
+                  "table",
+                  { staticClass: "table table-head-fixed text-nowrap" },
+                  [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.desistements, function (desistement) {
+                        return _c("tr", { key: desistement.id }, [
+                          _c("td", [_vm._v(_vm._s(desistement.id))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(desistement.numero))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(desistement.client_appartement_immeuble)
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                _vm.truncate(desistement.causes_annulation, 30)
+                              )
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("span", { staticClass: "tag tag-success" }, [
+                              _vm._v(
+                                _vm._s(_vm.convert(desistement.created_at))
+                              ),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-success btn-sm",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.editDesistement(desistement.id)
+                                  },
+                                },
+                              },
+                              [_vm._v("Edit")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-danger btn-sm",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.deleteDesistement(desistement.id)
+                                  },
+                                },
+                              },
+                              [_vm._v("Delete")]
+                            ),
+                          ]),
+                        ])
+                      }),
+                      0
+                    ),
+                  ]
+                ),
+              ]
+            ),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "addNew",
+            tabindex: "-1",
+            "aria-labelledby": "exampleModalLabel",
+            "aria-hidden": "true",
+          },
+        },
+        [
+          _c("div", { staticClass: "modal-dialog" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title",
+                    attrs: { id: "exampleModalLabel" },
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(
+                        _vm.is_Editing
+                          ? "Update Desistement"
+                          : "Add New Desistement"
+                      )
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(2),
+              ]),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function ($event) {
+                      $event.preventDefault()
+                      _vm.is_Editing
+                        ? _vm.updateDesistement()
+                        : _vm.createDesistement()
+                    },
+                  },
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.desistement.promesse_vente_id,
+                              expression: "desistement.promesse_vente_id",
+                            },
+                          ],
+                          staticClass: "form-control",
+                          attrs: { id: "promesse_vente_id" },
+                          on: {
+                            change: function ($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function (o) {
+                                  return o.selected
+                                })
+                                .map(function (o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.desistement,
+                                "promesse_vente_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            },
+                          },
+                        },
+                        [
+                          _c(
+                            "option",
+                            { attrs: { value: "", hidden: "", selected: "" } },
+                            [_vm._v("Selectionner une promesse vente")]
+                          ),
+                          _vm._v(" "),
+                          _vm._l(_vm.promesseventes, function (promessevente) {
+                            return _c(
+                              "option",
+                              {
+                                key: promessevente.id,
+                                domProps: { value: promessevente.id },
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    promessevente.client_appartement_immeuble
+                                  )
+                                ),
+                              ]
+                            )
+                          }),
+                        ],
+                        2
+                      ),
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c("textarea", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.desistement.causes_annulation,
+                            expression: "desistement.causes_annulation",
+                          },
+                        ],
+                        staticClass: "form-control",
+                        attrs: {
+                          name: "",
+                          placeholder:
+                            "causes de l'annulation de la promesse de vente...",
+                          id: "causes_annulation",
+                          cols: "5",
+                          rows: "2",
+                        },
+                        domProps: { value: _vm.desistement.causes_annulation },
+                        on: {
+                          input: function ($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(
+                              _vm.desistement,
+                              "causes_annulation",
+                              $event.target.value
+                            )
+                          },
+                        },
+                      }),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", "data-dismiss": "modal" },
+                      },
+                      [_vm._v("Close")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" },
+                      },
+                      [_vm._v(_vm._s(_vm.is_Editing ? "Update" : "Create"))]
+                    ),
+                  ]),
+                ]
+              ),
+            ]),
+          ]),
+        ]
+      ),
     ],
     1
   )
@@ -46965,21 +47682,76 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8 mt-5" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v("Desistements Component"),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _vm._v(
-              "\n                    I'm an Desistements component.\n                "
-            ),
-          ]),
-        ]),
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [
+        _vm._v("Liste des Desistements"),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-tools" }, [
+        _c(
+          "div",
+          {
+            staticClass: "input-group input-group-sm",
+            staticStyle: { width: "150px" },
+          },
+          [
+            _c("input", {
+              staticClass: "form-control float-right",
+              attrs: {
+                type: "text",
+                name: "table_search",
+                placeholder: "Search",
+              },
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group-append" }, [
+              _c(
+                "button",
+                { staticClass: "btn btn-default", attrs: { type: "submit" } },
+                [_c("i", { staticClass: "fas fa-search" })]
+              ),
+            ]),
+          ]
+        ),
       ]),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Numero")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Promesse Vente")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Causes Anulation")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Created_at")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Actions")]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close",
+        },
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   },
 ]
 render._withStripped = true
@@ -48895,7 +49667,7 @@ var render = function () {
                                 },
                               ],
                               staticClass: "form-control",
-                              attrs: { id: "client_id" },
+                              attrs: { id: "avocat_id" },
                               on: {
                                 change: function ($event) {
                                   var $$selectedVal = Array.prototype.filter
@@ -49773,7 +50545,527 @@ var render = function () {
         attrs: { title: "Les Contrats de Vente Definitifs" },
       }),
       _vm._v(" "),
-      _vm._m(0),
+      _c("div", { staticClass: "d-flex justify-content-end" }, [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-success btn-sm mb-3",
+            attrs: { "data-toggle": "modal", "data-target": "#addNew" },
+            on: { click: _vm.newModal },
+          },
+          [_vm._v("Ajouter")]
+        ),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-12" }, [
+          _c("div", { staticClass: "card" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "card-body table-responsive p-0",
+                staticStyle: { height: "300px" },
+              },
+              [
+                _c(
+                  "table",
+                  { staticClass: "table table-head-fixed text-nowrap" },
+                  [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(
+                        _vm.contratventedefinitifs,
+                        function (contratventedefinitif) {
+                          return _c("tr", { key: contratventedefinitif.id }, [
+                            _c("td", [
+                              _vm._v(_vm._s(contratventedefinitif.id)),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(_vm._s(contratventedefinitif.prix_vente)),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(contratventedefinitif.type_payement)
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(
+                                  _vm.truncate(
+                                    contratventedefinitif.description_appartement,
+                                    25
+                                  )
+                                )
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(
+                                  contratventedefinitif.signature_acquereur
+                                )
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(
+                                  contratventedefinitif.signature_directeur_commercial
+                                )
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(contratventedefinitif.nom) +
+                                  " " +
+                                  _vm._s(contratventedefinitif.prenom)
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _vm._v(
+                                _vm._s(
+                                  contratventedefinitif.client_appartement_immeuble
+                                )
+                              ),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("span", { staticClass: "tag tag-success" }, [
+                                _vm._v(
+                                  _vm._s(
+                                    _vm.convert(
+                                      contratventedefinitif.created_at
+                                    )
+                                  )
+                                ),
+                              ]),
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-success btn-sm",
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.editContratVenteDefinitif(
+                                        contratventedefinitif.id
+                                      )
+                                    },
+                                  },
+                                },
+                                [_vm._v("Edit")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-danger btn-sm",
+                                  on: {
+                                    click: function ($event) {
+                                      return _vm.deleteContratVenteDefinitif(
+                                        contratventedefinitif.id
+                                      )
+                                    },
+                                  },
+                                },
+                                [_vm._v("Delete")]
+                              ),
+                            ]),
+                          ])
+                        }
+                      ),
+                      0
+                    ),
+                  ]
+                ),
+              ]
+            ),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "addNew",
+            tabindex: "-1",
+            "aria-labelledby": "exampleModalLabel",
+            "aria-hidden": "true",
+          },
+        },
+        [
+          _c("div", { staticClass: "modal-dialog" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title",
+                    attrs: { id: "exampleModalLabel" },
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(
+                        _vm.is_Editing
+                          ? "Update Contrat Vente"
+                          : "Add New Contrat Vente"
+                      )
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(2),
+              ]),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function ($event) {
+                      $event.preventDefault()
+                      _vm.is_Editing
+                        ? _vm.updateContratVenteDefinitif()
+                        : _vm.createContratVenteDefinitif()
+                    },
+                  },
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _c("div", { staticClass: "col-md-12" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("textarea", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value:
+                                  _vm.contratventedefinitif
+                                    .description_appartement,
+                                expression:
+                                  "contratventedefinitif.description_appartement",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              name: "",
+                              placeholder: "Description de l'appartement...",
+                              id: "description_appartement",
+                              cols: "5",
+                              rows: "2",
+                            },
+                            domProps: {
+                              value:
+                                _vm.contratventedefinitif
+                                  .description_appartement,
+                            },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.contratventedefinitif,
+                                  "description_appartement",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-6" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: _vm.contratventedefinitif.prix_vente,
+                                expression: "contratventedefinitif.prix_vente",
+                              },
+                            ],
+                            staticClass: "form-control",
+                            attrs: {
+                              type: "text",
+                              id: "prix_payer",
+                              placeholder: "prix de vente de l'appart...",
+                            },
+                            domProps: {
+                              value: _vm.contratventedefinitif.prix_vente,
+                            },
+                            on: {
+                              input: function ($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.contratventedefinitif,
+                                  "prix_vente",
+                                  $event.target.value
+                                )
+                              },
+                            },
+                          }),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value:
+                                    _vm.contratventedefinitif.type_payement,
+                                  expression:
+                                    "contratventedefinitif.type_payement",
+                                },
+                              ],
+                              staticClass: "form-control",
+                              attrs: { id: "type_payement" },
+                              on: {
+                                change: function ($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function (o) {
+                                      return o.selected
+                                    })
+                                    .map(function (o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.contratventedefinitif,
+                                    "type_payement",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                },
+                              },
+                            },
+                            [
+                              _c(
+                                "option",
+                                { attrs: { value: "", selected: "" } },
+                                [_vm._v("Type de payement")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "option",
+                                { attrs: { value: "Liquide", selected: "" } },
+                                [_vm._v("Liquide")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "option",
+                                { attrs: { value: "Espece", selected: "" } },
+                                [_vm._v("Espece")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "option",
+                                { attrs: { value: "Tmoney", selected: "" } },
+                                [_vm._v("Tmoney")]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "option",
+                                { attrs: { value: "Flooz", selected: "" } },
+                                [_vm._v("Flooz")]
+                              ),
+                            ]
+                          ),
+                        ]),
+                      ]),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-md-6" }, [
+                        _c("div", { staticClass: "form-group" }, [
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.contratventedefinitif.avocat_id,
+                                  expression: "contratventedefinitif.avocat_id",
+                                },
+                              ],
+                              staticClass: "form-control",
+                              attrs: { id: "avocat_id" },
+                              on: {
+                                change: function ($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function (o) {
+                                      return o.selected
+                                    })
+                                    .map(function (o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.contratventedefinitif,
+                                    "avocat_id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                },
+                              },
+                            },
+                            [
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    value: "",
+                                    hidden: "",
+                                    selected: "",
+                                  },
+                                },
+                                [_vm._v("Selectionner l'Avocat")]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(_vm.avocats, function (avocat) {
+                                return _c(
+                                  "option",
+                                  {
+                                    key: avocat.id,
+                                    domProps: { value: avocat.id },
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(avocat.nom) +
+                                        " " +
+                                        _vm._s(avocat.prenom)
+                                    ),
+                                  ]
+                                )
+                              }),
+                            ],
+                            2
+                          ),
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-group" }, [
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value:
+                                    _vm.contratventedefinitif.promesse_vente_id,
+                                  expression:
+                                    "contratventedefinitif.promesse_vente_id",
+                                },
+                              ],
+                              staticClass: "form-control",
+                              attrs: { id: "promesse_vente_id" },
+                              on: {
+                                change: function ($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function (o) {
+                                      return o.selected
+                                    })
+                                    .map(function (o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    _vm.contratventedefinitif,
+                                    "promesse_vente_id",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                },
+                              },
+                            },
+                            [
+                              _c(
+                                "option",
+                                {
+                                  attrs: {
+                                    value: "",
+                                    hidden: "",
+                                    selected: "",
+                                  },
+                                },
+                                [_vm._v("Selectionner une promesse vente")]
+                              ),
+                              _vm._v(" "),
+                              _vm._l(
+                                _vm.promesseventes,
+                                function (promessevente) {
+                                  return _c(
+                                    "option",
+                                    {
+                                      key: promessevente.id,
+                                      domProps: { value: promessevente.id },
+                                    },
+                                    [
+                                      _vm._v(
+                                        _vm._s(
+                                          promessevente.client_appartement_immeuble
+                                        )
+                                      ),
+                                    ]
+                                  )
+                                }
+                              ),
+                            ],
+                            2
+                          ),
+                        ]),
+                      ]),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", "data-dismiss": "modal" },
+                      },
+                      [_vm._v("Close")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" },
+                      },
+                      [_vm._v(_vm._s(_vm.is_Editing ? "Update" : "Create"))]
+                    ),
+                  ]),
+                ]
+              ),
+            ]),
+          ]),
+        ]
+      ),
     ],
     1
   )
@@ -49783,21 +51075,84 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8 mt-5" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v("Contrat Vente Definitif Component"),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _vm._v(
-              "\n                    I'm an Contrat Vente Definitif component.\n                "
-            ),
-          ]),
-        ]),
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [
+        _vm._v("Liste des Contrats de Vente Definitifs"),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-tools" }, [
+        _c(
+          "div",
+          {
+            staticClass: "input-group input-group-sm",
+            staticStyle: { width: "150px" },
+          },
+          [
+            _c("input", {
+              staticClass: "form-control float-right",
+              attrs: {
+                type: "text",
+                name: "table_search",
+                placeholder: "Search",
+              },
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group-append" }, [
+              _c(
+                "button",
+                { staticClass: "btn btn-default", attrs: { type: "submit" } },
+                [_c("i", { staticClass: "fas fa-search" })]
+              ),
+            ]),
+          ]
+        ),
       ]),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Prix_vente")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Type_payement")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Description_Appart")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Acquereur")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Directeur")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Avocat")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Promesse")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Created_at")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Actions")]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close",
+        },
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   },
 ]
 render._withStripped = true

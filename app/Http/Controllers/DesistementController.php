@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Desistement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DesistementController extends Controller
 {
@@ -15,7 +16,19 @@ class DesistementController extends Controller
     public function index()
     {
         //
-        $desistements = Desistement::all();
+        //$desistements = Desistement::all();
+        $desistements = DB::SELECT("SELECT 
+        desistements.id,
+        desistements.numero,
+        desistements.causes_annulation,
+        desistements.created_at,
+        CONCAT(clients.nom,' ',clients.prenom1,'/',appartements.numero,'/',immeubles.nom) as client_appartement_immeuble 
+        FROM desistements,`promesse_ventes`,clients,appartements,immeubles 
+        WHERE 
+            desistements.promesse_vente_id = promesse_ventes.id AND
+            promesse_ventes.client_id = clients.id and 
+            promesse_ventes.appartement_id=appartements.id and 
+            appartements.immeuble_id=immeubles.id");
         return $desistements;
     }
 
@@ -30,7 +43,8 @@ class DesistementController extends Controller
         //
         $data = $request->validate([
             'promesse_vente_id'=>'required|integer',
-            'causes_annulation'=>'required|string'
+            'causes_annulation'=>'required|string',
+            'numero'=>'required|string'
         ]);
         $data['numero']= time().'+'.$data['promesse_vente_id'];
         return Desistement::create($data);
@@ -60,7 +74,8 @@ class DesistementController extends Controller
         //
         $data = $request->validate([
             'promesse_vente_id'=>'required|integer',
-            'causes_annulation'=>'required|string'
+            'causes_annulation'=>'required|string',
+            'numero'=>'required|string'
         ]);
         $data['numero']= time().'+'.$data['promesse_vente_id'];
         $desistement->update($data);
