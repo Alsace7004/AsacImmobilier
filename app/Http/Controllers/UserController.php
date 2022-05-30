@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
+    public function userCount(){
+        $nbr_users = DB::SELECT('SELECT COUNT(*) as nbr_total_user FROM users');
+        return $nbr_users;
+    }
     /**
      * Display a listing of the resource.
      *

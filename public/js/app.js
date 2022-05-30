@@ -3123,8 +3123,50 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  methods: {},
-  created: function created() {},
+  data: function data() {
+    return {
+      immeubles: '',
+      appartements: '',
+      clients: '',
+      users: ''
+    };
+  },
+  methods: {
+    loadCountImmeubles: function loadCountImmeubles() {
+      var _this = this;
+
+      axios.get('api/immeublesNumb').then(function (immeubles) {
+        _this.immeubles = immeubles.data[0].nbr_total_immeuble;
+      });
+    },
+    loadCountAppartements: function loadCountAppartements() {
+      var _this2 = this;
+
+      axios.get('api/appartementsNumb').then(function (appartements) {
+        _this2.appartements = appartements.data[0].nbr_total_appartement;
+      });
+    },
+    loadCountClients: function loadCountClients() {
+      var _this3 = this;
+
+      axios.get('api/clientsNumb').then(function (clients) {
+        _this3.clients = clients.data[0].nbr_total_client;
+      });
+    },
+    loadCountUsers: function loadCountUsers() {
+      var _this4 = this;
+
+      axios.get('api/usersNumb').then(function (users) {
+        _this4.users = users.data[0].nbr_total_user;
+      });
+    }
+  },
+  created: function created() {
+    this.loadCountImmeubles();
+    this.loadCountAppartements();
+    this.loadCountClients();
+    this.loadCountUsers();
+  },
   mounted: function mounted() {
     console.log('Component mounted.');
   }
@@ -47615,11 +47657,67 @@ var render = function () {
     [
       _c("page-title", { attrs: { title: "Le Dashboard" } }),
       _vm._v(" "),
-      _vm._m(0),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-lg-3 col-6" }, [
+          _c("div", { staticClass: "small-box bg-info" }, [
+            _c("div", { staticClass: "inner" }, [
+              _c("h3", [_vm._v(_vm._s(this.users))]),
+              _vm._v(" "),
+              _c("p", [_vm._v("Users")]),
+            ]),
+            _vm._v(" "),
+            _vm._m(0),
+            _vm._v(" "),
+            _vm._m(1),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-lg-3 col-6" }, [
+          _c("div", { staticClass: "small-box bg-success" }, [
+            _c("div", { staticClass: "inner" }, [
+              _c("h3", [_vm._v(_vm._s(this.immeubles))]),
+              _vm._v(" "),
+              _c("p", [_vm._v("Immeubles")]),
+            ]),
+            _vm._v(" "),
+            _vm._m(2),
+            _vm._v(" "),
+            _vm._m(3),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-lg-3 col-6" }, [
+          _c("div", { staticClass: "small-box bg-warning" }, [
+            _c("div", { staticClass: "inner" }, [
+              _c("h3", [_vm._v(_vm._s(this.appartements))]),
+              _vm._v(" "),
+              _c("p", [_vm._v("Appartements")]),
+            ]),
+            _vm._v(" "),
+            _vm._m(4),
+            _vm._v(" "),
+            _vm._m(5),
+          ]),
+        ]),
+        _vm._v(" "),
+        _c("div", { staticClass: "col-lg-3 col-6" }, [
+          _c("div", { staticClass: "small-box bg-danger" }, [
+            _c("div", { staticClass: "inner" }, [
+              _c("h3", [_vm._v(_vm._s(this.clients))]),
+              _vm._v(" "),
+              _c("p", [_vm._v("Clients")]),
+            ]),
+            _vm._v(" "),
+            _vm._m(6),
+            _vm._v(" "),
+            _vm._m(7),
+          ]),
+        ]),
+      ]),
       _vm._v(" "),
-      _vm._m(1),
+      _vm._m(8),
       _vm._v(" "),
-      _vm._m(2),
+      _vm._m(9),
     ],
     1
   )
@@ -47629,87 +47727,68 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-lg-3 col-6" }, [
-        _c("div", { staticClass: "small-box bg-info" }, [
-          _c("div", { staticClass: "inner" }, [
-            _c("h3", [_vm._v("150")]),
-            _vm._v(" "),
-            _c("p", [_vm._v("Users")]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "icon" }, [
-            _c("i", { staticClass: "ion fas fa-users" }),
-          ]),
-          _vm._v(" "),
-          _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-            _vm._v("More info "),
-            _c("i", { staticClass: "fas fa-arrow-circle-right" }),
-          ]),
-        ]),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-lg-3 col-6" }, [
-        _c("div", { staticClass: "small-box bg-success" }, [
-          _c("div", { staticClass: "inner" }, [
-            _c("h3", [
-              _vm._v("53"),
-              _c("sup", { staticStyle: { "font-size": "20px" } }, [
-                _vm._v("%"),
-              ]),
-            ]),
-            _vm._v(" "),
-            _c("p", [_vm._v("Immeubles")]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "icon" }, [
-            _c("i", { staticClass: "ion fas fa-building" }),
-          ]),
-          _vm._v(" "),
-          _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-            _vm._v("More info "),
-            _c("i", { staticClass: "fas fa-arrow-circle-right" }),
-          ]),
-        ]),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-lg-3 col-6" }, [
-        _c("div", { staticClass: "small-box bg-warning" }, [
-          _c("div", { staticClass: "inner" }, [
-            _c("h3", [_vm._v("44")]),
-            _vm._v(" "),
-            _c("p", [_vm._v("Appartements")]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "icon" }, [
-            _c("i", { staticClass: "ion fas fa-house-user" }),
-          ]),
-          _vm._v(" "),
-          _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-            _vm._v("More info "),
-            _c("i", { staticClass: "fas fa-arrow-circle-right" }),
-          ]),
-        ]),
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-lg-3 col-6" }, [
-        _c("div", { staticClass: "small-box bg-danger" }, [
-          _c("div", { staticClass: "inner" }, [
-            _c("h3", [_vm._v("65")]),
-            _vm._v(" "),
-            _c("p", [_vm._v("Clients")]),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "icon" }, [
-            _c("i", { staticClass: "ion fas fa-users" }),
-          ]),
-          _vm._v(" "),
-          _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
-            _vm._v("More info "),
-            _c("i", { staticClass: "fas fa-arrow-circle-right" }),
-          ]),
-        ]),
-      ]),
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "ion fas fa-users" }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
+      _vm._v("More info "),
+      _c("i", { staticClass: "fas fa-arrow-circle-right" }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "ion fas fa-building" }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
+      _vm._v("More info "),
+      _c("i", { staticClass: "fas fa-arrow-circle-right" }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "ion fas fa-house-user" }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
+      _vm._v("More info "),
+      _c("i", { staticClass: "fas fa-arrow-circle-right" }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "icon" }, [
+      _c("i", { staticClass: "ion fas fa-users" }),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
+      _vm._v("More info "),
+      _c("i", { staticClass: "fas fa-arrow-circle-right" }),
     ])
   },
   function () {

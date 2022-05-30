@@ -32,7 +32,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::apiResources(['immeubles'=>ImmeubleController::class]);
 Route::GET('immeublesNumb',[ImmeubleController::class,'immeubleCount'])->name('immeubles.count');
 Route::apiResources(['appartements'=>AppartementController::class]);
+Route::GET('appartementsNumb',[AppartementController::class,'appartementCount'])->name('appartements.count');
 Route::apiResources(['clients'=>ClientController::class]);
+Route::GET('clientsNumb',[ClientController::class,'clientCount'])->name('clients.count');
 Route::apiResources(['visites'=>VisiteController::class]);
 Route::apiResources(['promesseVentes'=>PromesseVenteController::class]);
 Route::POST('promesseVentePayements/{id}',[PromesseVenteController::class,'promesseVentePayement'])->name('promesseVente.payements');
@@ -44,3 +46,4 @@ Route::apiResources(['signatures'=>SignatureController::class]);
 Route::apiResources(['contratVenteDefinitifs'=>ContratVenteDefinitifController::class]);
 Route::apiResources(['procesVerbals'=>ProcesVerbalController::class]);
 Route::apiResources(['users'=>UserController::class]);
+Route::GET('usersNumb',[UserController::class,'userCount'])->name('users.count');

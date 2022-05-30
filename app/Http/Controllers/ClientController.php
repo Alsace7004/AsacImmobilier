@@ -4,9 +4,14 @@ namespace App\Http\Controllers;
 
 use App\Models\Client;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ClientController extends Controller
 {
+    public function clientCount(){
+        $nbr_clients = DB::SELECT('SELECT COUNT(*) as nbr_total_client FROM clients');
+        return $nbr_clients;
+    }
     /**
      * Display a listing of the resource.
      *

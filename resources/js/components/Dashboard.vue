@@ -6,7 +6,7 @@
                           <!-- small box -->
                           <div class="small-box bg-info">
                             <div class="inner">
-                              <h3>150</h3>
+                              <h3>{{this.users}}</h3>
               
                               <p>Users</p>
                             </div>
@@ -21,7 +21,7 @@
                           <!-- small box -->
                           <div class="small-box bg-success">
                             <div class="inner">
-                              <h3>53<sup style="font-size: 20px">%</sup></h3>
+                              <h3>{{this.immeubles}}</h3>
               
                               <p>Immeubles</p>
                             </div>
@@ -36,7 +36,7 @@
                           <!-- small box -->
                           <div class="small-box bg-warning">
                             <div class="inner">
-                              <h3>44</h3>
+                              <h3>{{this.appartements}}</h3>
               
                               <p>Appartements</p>
                             </div>
@@ -51,7 +51,7 @@
                           <!-- small box -->
                           <div class="small-box bg-danger">
                             <div class="inner">
-                              <h3>65</h3>
+                              <h3>{{this.clients}}</h3>
               
                               <p>Clients</p>
                             </div>
@@ -192,12 +192,41 @@
 
 <script>
     export default {
-
+        data(){
+          return{
+            immeubles:'',
+            appartements:'',
+            clients:'',
+            users:'',
+          }
+        },
         methods:{
-           
+           loadCountImmeubles(){
+                axios.get('api/immeublesNumb').then((immeubles)=>{
+                  this.immeubles = immeubles.data[0].nbr_total_immeuble;
+                })
+            },
+            loadCountAppartements(){
+                axios.get('api/appartementsNumb').then((appartements)=>{
+                  this.appartements = appartements.data[0].nbr_total_appartement;
+                })
+            },
+            loadCountClients(){
+                axios.get('api/clientsNumb').then((clients)=>{
+                  this.clients = clients.data[0].nbr_total_client;
+                })
+            },
+            loadCountUsers(){
+                axios.get('api/usersNumb').then((users)=>{
+                  this.users = users.data[0].nbr_total_user;
+                })
+            },
         },
         created(){
-          
+          this.loadCountImmeubles();
+          this.loadCountAppartements();
+          this.loadCountClients();
+          this.loadCountUsers();
         },
         mounted() {
             console.log('Component mounted.')

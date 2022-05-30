@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\DB;
 
 class AppartementController extends Controller
 {
+    public function appartementCount(){
+        $nbr_appartements = DB::SELECT('SELECT COUNT(*) as nbr_total_appartement FROM appartements');
+        return $nbr_appartements;
+    }
     /**
      * Display a listing of the resource.
      *
