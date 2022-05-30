@@ -41,6 +41,7 @@ let routes = [
     {path:'/procesVerbals',component:require('./components/ProcesVerbals.vue').default}
 ];
 const router = new VueRouter({
+  mode:'history',
     routes
 })
 /**

@@ -29,7 +29,8 @@ use App\Http\Controllers\ContratVenteDefinitifController;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-//Route::middleware(['auth'])->group(function () {
+
+
     Route::apiResources(['immeubles'=>ImmeubleController::class]);
     Route::GET('immeublesNumb',[ImmeubleController::class,'immeubleCount'])->name('immeubles.count');
     Route::apiResources(['appartements'=>AppartementController::class]);
@@ -57,8 +58,3 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     Route::apiResources(['users'=>UserController::class]);
     Route::GET('usersNumb',[UserController::class,'userCount'])->name('users.count');
 
-//});
-
-//Auth::routes();
-
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
