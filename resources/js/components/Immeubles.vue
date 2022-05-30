@@ -37,6 +37,7 @@
                     </tr>
                   </thead>
                   <tbody>
+                      <tr v-if="!immeubles.length" class="text-center text-danger" style="font-weight:bolder;margin:0px auto">Pas d'immeubles disponible...</tr>
                     <tr v-for="immeuble in immeubles" :key="immeuble.id">
                       <td>{{immeuble.id}}</td>
                       <td>{{immeuble.nom}}</td>

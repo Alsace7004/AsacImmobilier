@@ -48,7 +48,7 @@ class AppartementController extends Controller
         ]);
         $data = $request->all();
         $data['numero'] = $data['numero_etage'].'-'.$data['numero_appartement'];
-        $data['type'] =1;
+        //$data['type'] =1;
         return Appartement::create($data);
     }
 

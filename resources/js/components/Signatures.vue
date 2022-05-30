@@ -169,7 +169,7 @@
             },*/
             createSignature(){
                     axios.post('api/signatures',this.signature).then(()=>{
-                    $('#addNew').modal('hide'); 
+                    //$('#addNew').modal('hide'); 
                     Swal.fire('Created!','Signature Ajouter avec success.','success') ;
                         this.loadSignatures();
                     this.signature={

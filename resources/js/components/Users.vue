@@ -32,6 +32,7 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <tr v-if="!users.length" class="text-center text-danger" style="font-weight:bolder;margin:0px auto">Pas de personnels disponible...</tr>
                     <tr v-for="user in users" :key="user.id">
                       <td>{{user.id}}</td>
                       <td>{{user.name}}</td>

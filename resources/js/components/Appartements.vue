@@ -35,12 +35,13 @@
                       <th>Nbr Chambre</th>
                       <th>Prix</th>
                       <th>Type</th>
-                      <th>Immeuble</th>
+                      <th>Appart/Immeuble</th>
                       <th>Created_at</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
                   <tbody>
+                    <tr v-if="!appartements.length" class="text-center text-danger" style="font-weight:bolder;margin:0px auto">Pas d'Appartements disponible...</tr>
                     <tr v-for="appartement in appartements" :key="appartement.id">
                       <td>{{appartement.id}}</td>
                       <!--<td>{{appartement.numero_etage}}</td>
@@ -110,9 +111,9 @@
                                     <div v-if="is_Editing">
                                         <div class="form-group">
                                             <select v-model="appartement.type" id="type" name="" class="form-control">
-                                                <option value="">Status de L'Appartement</option>
-                                                <option value="1">Disponible</option>
-                                                <option value="0">Vendu</option>
+                                                <option value="" selected>Status de L'Appartement</option>
+                                                <option value="Disponible">Disponible</option>
+                                                <option value="vendu">Vendu</option>
                                             </select>
                                         </div>
                                     </div>
@@ -144,7 +145,7 @@
                     immeuble_id:'',
                     numero_etage:'',
                     numero_appartement:'',
-                    numero:this.numero_etage,
+                    numero:'0',
                     superficie:'',
                     nbr_chambre:'',
                     prix_previsionnel:'',

@@ -243,14 +243,24 @@
                         appartement_id:'',
                         tauxTVA:'',
                         prixVenteDefinitifHT:'',
-                        prixVenteDefinitifTTC:'',
+                        prixVenteDefinitifTTC:'0',
                         avance:'',
-                        etat:'',
+                        etat:'0',
                     }
                 }).catch((err)=>{
                     /*console.log('valeur de la err.response:',err.response.data.Message)
                     console.log('valeur de la err.response:',err.response.data.AvancePermis)*/
-                    Swal.fire('Error !!!',`Une Erreur Survenue !!! \n\n ${err.response.data.Message} \n\n L'avance doit etre >= ${err.response.data.AvancePermis} XOF `,'error')
+                   // Swal.fire('Error !!!',`Une Erreur Survenue !!! \n\n ${err.response.data.Message} \n\n L'avance doit etre >= ${err.response.data.AvancePermis} XOF `,'error')
+                   if(err.response.data.Message){
+                       Swal.fire('Error !!!',`Une Erreur Survenue !!! \n\n ${err.response.data.Message} \n\n L'avance doit etre >= ${err.response.data.AvancePermis} XOF `,'error')
+                   }else if(err.response.data.errors.appartement_id){
+                        Swal.fire('Error !!!',`Cette appartement est deja pris :${err.response.data.errors.appartement_id}`,'error')
+                   }else if(err.response.message){
+                        Swal.fire('Error !!!',`duplication de user pas possible`,'error')
+                   }else{
+                         Swal.fire('Error !!!',`Une erreur est survenue`,'error')
+                   }
+                   
                 })
             },
             deletePromesseVente(id){

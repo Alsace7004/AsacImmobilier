@@ -47,7 +47,7 @@ class PromesseVenteController extends Controller
         //
         $data = $request->validate([
             'client_id'=>'required|integer',
-            'appartement_id'=>'required|integer',
+            'appartement_id'=>'required|integer|unique:promesse_ventes,appartement_id',
             'tauxTVA'=>'required|numeric',
             'prixVenteDefinitifHT'=>'required|numeric',
             'prixVenteDefinitifTTC'=>'required|numeric',
@@ -55,8 +55,8 @@ class PromesseVenteController extends Controller
             'etat'=>'required|string'
             //'nom_promesse'=>'required|string'
         ]);
-        $data['etat']=true;
-        $data['nom_promesse']="holla";
+        $data['etat']='En cours';
+        //$data['nom_promesse']="holla";
         $data['prixVenteDefinitifTTC']=$data['prixVenteDefinitifHT']*(1+($data['tauxTVA'])/100);
         $avancePermis = (20* $data['prixVenteDefinitifTTC'])/100;
         if($data['avance']>$avancePermis){
@@ -68,8 +68,6 @@ class PromesseVenteController extends Controller
                 
             ],400);
         }
-  
-
     }
 
     /**
@@ -104,7 +102,7 @@ class PromesseVenteController extends Controller
             'etat'=>'required|string',
             //'nom_promesse'=>'required|string'
         ]);
-        $data['nom_promesse']="holla";
+        //$data['nom_promesse']="holla";
         $data['prixVenteDefinitifTTC']=$data['prixVenteDefinitifHT']*(1+($data['tauxTVA'])/100);
         $avancePermis = (20* $data['prixVenteDefinitifTTC'])/100;
         if($data['avance']>$avancePermis){
