@@ -2998,6 +2998,130 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   methods: {},
   created: function created() {},
@@ -3848,12 +3972,197 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
-    return {};
+    return {
+      contratventedefinitifs: [],
+      procesverbals: [],
+      procesverbal: {
+        user_id: '0',
+        contrat_vente_definitif_id: '',
+        signature_acquereur: '0'
+      },
+      edit_id: '',
+      is_Editing: false
+    };
   },
-  methods: {},
-  created: function created() {},
+  methods: {
+    convert: function convert(jour) {
+      var date = new Date(jour);
+      return date.toDateString(); // "sun nov 29 2020 "
+    },
+    newModal: function newModal() {
+      this.procesverbal = {
+        user_id: '0',
+        contrat_vente_definitif_id: '',
+        signature_acquereur: '0'
+      };
+      this.is_Editing = false;
+      $('#addNew').modal('show');
+    },
+    loadProcesVerbals: function loadProcesVerbals() {
+      var _this = this;
+
+      axios.get('api/procesVerbals').then(function (procesverbals) {
+        _this.procesverbals = procesverbals.data;
+      });
+    },
+    loadContratVenteDefinitifs: function loadContratVenteDefinitifs() {
+      var _this2 = this;
+
+      axios.get('api/contratVenteDefinitifs').then(function (contratventedefinitifs) {
+        _this2.contratventedefinitifs = contratventedefinitifs.data;
+      });
+    },
+    createProcesVerbal: function createProcesVerbal() {
+      var _this3 = this;
+
+      axios.post('api/procesVerbals', this.procesverbal).then(function () {
+        //$('#addNew').modal('hide'); 
+        Swal.fire('Created!', 'Proces Verbal Ajouter avec success.', 'success');
+
+        _this3.loadProcesVerbals();
+
+        _this3.procesverbal = {
+          user_id: '0',
+          contrat_vente_definitif_id: '',
+          signature_acquereur: '0'
+        };
+      })["catch"](function (err) {
+        Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+      });
+    },
+    deleteProcesVerbal: function deleteProcesVerbal(id) {
+      var _this4 = this;
+
+      Swal.fire({
+        title: 'Etes vous sûr???',
+        text: "Pas de récuperation possible!!!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, supprimer le'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          axios["delete"]("api/procesVerbals/".concat(id)).then(function () {
+            Swal.fire('Deleted!', 'Le Proces Verbal a été supprimé.', 'success');
+
+            _this4.loadProcesVerbals();
+          })["catch"](function (err) {
+            Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+          });
+        } else {
+          Swal.fire('Cancelled !!!', 'Votre Proces Verbal est toujours disponible !!!', 'error');
+        }
+      }); //first Then
+    },
+    //deleteProcesVerbal
+    editProcesVerbal: function editProcesVerbal(id) {
+      var _this5 = this;
+
+      axios.get("api/procesVerbals/".concat(id)).then(function (res) {
+        $('#addNew').modal('show');
+        _this5.edit_id = res.data.id;
+        _this5.procesverbal.contrat_vente_definitif_id = res.data.contrat_vente_definitif_id;
+        _this5.is_Editing = true;
+      });
+    },
+    updateProcesVerbal: function updateProcesVerbal() {
+      var _this6 = this;
+
+      axios.put("api/procesVerbals/".concat(this.edit_id), this.procesverbal).then(function () {
+        $('#addNew').modal('hide');
+        Swal.fire('Updated!', 'Proces Verbal mise à jour avec success.', 'success');
+
+        _this6.loadProcesVerbals();
+
+        _this6.edit_id = "";
+        _this6.is_Editing = false;
+      })["catch"](function (err) {
+        Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+      });
+    }
+  },
+  created: function created() {
+    this.loadProcesVerbals();
+    this.loadContratVenteDefinitifs();
+  },
   mounted: function mounted() {
     console.log('Component mounted.');
   }
@@ -4598,7 +4907,33 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('api/users').then(function (users) {
         _this.users = users.data;
       });
-    }
+    },
+    deleteUser: function deleteUser(id) {
+      var _this2 = this;
+
+      Swal.fire({
+        title: 'Etes vous sûr???',
+        text: "Pas de récuperation possible!!!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Oui, supprimer le'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          axios["delete"]("api/users/".concat(id)).then(function () {
+            Swal.fire('Deleted!', 'Utilisateur a été supprimé.', 'success');
+
+            _this2.loadUsers();
+          })["catch"](function (err) {
+            Swal.fire('Error !!!', 'Une Erreur Survenue !!!', 'error');
+          });
+        } else {
+          Swal.fire('Cancelled !!!', 'Utilisateur toujours disponible !!!', 'error');
+        }
+      }); //first Then
+    } //deleteUsers
+
   },
   created: function created() {
     this.loadUsers();
@@ -47281,6 +47616,10 @@ var render = function () {
       _c("page-title", { attrs: { title: "Le Dashboard" } }),
       _vm._v(" "),
       _vm._m(0),
+      _vm._v(" "),
+      _vm._m(1),
+      _vm._v(" "),
+      _vm._m(2),
     ],
     1
   )
@@ -47296,11 +47635,11 @@ var staticRenderFns = [
           _c("div", { staticClass: "inner" }, [
             _c("h3", [_vm._v("150")]),
             _vm._v(" "),
-            _c("p", [_vm._v("New Orders")]),
+            _c("p", [_vm._v("Users")]),
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "icon" }, [
-            _c("i", { staticClass: "ion ion-bag" }),
+            _c("i", { staticClass: "ion fas fa-users" }),
           ]),
           _vm._v(" "),
           _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
@@ -47320,11 +47659,11 @@ var staticRenderFns = [
               ]),
             ]),
             _vm._v(" "),
-            _c("p", [_vm._v("Bounce Rate")]),
+            _c("p", [_vm._v("Immeubles")]),
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "icon" }, [
-            _c("i", { staticClass: "ion ion-stats-bars" }),
+            _c("i", { staticClass: "ion fas fa-building" }),
           ]),
           _vm._v(" "),
           _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
@@ -47339,11 +47678,11 @@ var staticRenderFns = [
           _c("div", { staticClass: "inner" }, [
             _c("h3", [_vm._v("44")]),
             _vm._v(" "),
-            _c("p", [_vm._v("User Registrations")]),
+            _c("p", [_vm._v("Appartements")]),
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "icon" }, [
-            _c("i", { staticClass: "ion ion-person-add" }),
+            _c("i", { staticClass: "ion fas fa-house-user" }),
           ]),
           _vm._v(" "),
           _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
@@ -47358,11 +47697,185 @@ var staticRenderFns = [
           _c("div", { staticClass: "inner" }, [
             _c("h3", [_vm._v("65")]),
             _vm._v(" "),
-            _c("p", [_vm._v("Unique Visitors")]),
+            _c("p", [_vm._v("Clients")]),
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "icon" }, [
-            _c("i", { staticClass: "ion ion-pie-graph" }),
+            _c("i", { staticClass: "ion fas fa-users" }),
+          ]),
+          _vm._v(" "),
+          _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
+            _vm._v("More info "),
+            _c("i", { staticClass: "fas fa-arrow-circle-right" }),
+          ]),
+        ]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-lg-3 col-6" }, [
+        _c("div", { staticClass: "small-box bg-info" }, [
+          _c("div", { staticClass: "inner" }, [
+            _c("h3", [_vm._v("150")]),
+            _vm._v(" "),
+            _c("p", [_vm._v("Visites")]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "icon" }, [
+            _c("i", { staticClass: "ion fas fa-search-location" }),
+          ]),
+          _vm._v(" "),
+          _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
+            _vm._v("More info "),
+            _c("i", { staticClass: "fas fa-arrow-circle-right" }),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-lg-3 col-6" }, [
+        _c("div", { staticClass: "small-box bg-success" }, [
+          _c("div", { staticClass: "inner" }, [
+            _c("h3", [
+              _vm._v("53"),
+              _c("sup", { staticStyle: { "font-size": "20px" } }, [
+                _vm._v("%"),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c("p", [_vm._v("Promesses de vente")]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "icon" }, [
+            _c("i", { staticClass: "ion fas fa-edit" }),
+          ]),
+          _vm._v(" "),
+          _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
+            _vm._v("More info "),
+            _c("i", { staticClass: "fas fa-arrow-circle-right" }),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-lg-3 col-6" }, [
+        _c("div", { staticClass: "small-box bg-warning" }, [
+          _c("div", { staticClass: "inner" }, [
+            _c("h3", [_vm._v("44")]),
+            _vm._v(" "),
+            _c("p", [_vm._v("Avocats")]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "icon" }, [
+            _c("i", { staticClass: "ion fas fa-balance-scale" }),
+          ]),
+          _vm._v(" "),
+          _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
+            _vm._v("More info "),
+            _c("i", { staticClass: "fas fa-arrow-circle-right" }),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-lg-3 col-6" }, [
+        _c("div", { staticClass: "small-box bg-danger" }, [
+          _c("div", { staticClass: "inner" }, [
+            _c("h3", [_vm._v("65")]),
+            _vm._v(" "),
+            _c("p", [_vm._v("Signatures")]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "icon" }, [
+            _c("i", { staticClass: "ion fas fa-file-signature" }),
+          ]),
+          _vm._v(" "),
+          _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
+            _vm._v("More info "),
+            _c("i", { staticClass: "fas fa-arrow-circle-right" }),
+          ]),
+        ]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-lg-3 col-6" }, [
+        _c("div", { staticClass: "small-box bg-info" }, [
+          _c("div", { staticClass: "inner" }, [
+            _c("h3", [_vm._v("150")]),
+            _vm._v(" "),
+            _c("p", [_vm._v("Desistements")]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "icon" }, [
+            _c("i", { staticClass: "ion far fa-image" }),
+          ]),
+          _vm._v(" "),
+          _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
+            _vm._v("More info "),
+            _c("i", { staticClass: "fas fa-arrow-circle-right" }),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-lg-3 col-6" }, [
+        _c("div", { staticClass: "small-box bg-success" }, [
+          _c("div", { staticClass: "inner" }, [
+            _c("h3", [
+              _vm._v("53"),
+              _c("sup", { staticStyle: { "font-size": "20px" } }, [
+                _vm._v("%"),
+              ]),
+            ]),
+            _vm._v(" "),
+            _c("p", [_vm._v("Payements")]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "icon" }, [
+            _c("i", { staticClass: "ion fas fa-dollar-sign" }),
+          ]),
+          _vm._v(" "),
+          _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
+            _vm._v("More info "),
+            _c("i", { staticClass: "fas fa-arrow-circle-right" }),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-lg-3 col-6" }, [
+        _c("div", { staticClass: "small-box bg-warning" }, [
+          _c("div", { staticClass: "inner" }, [
+            _c("h3", [_vm._v("44")]),
+            _vm._v(" "),
+            _c("p", [_vm._v("Contrat de vente Definitif")]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "icon" }, [
+            _c("i", { staticClass: "ion far fa-sticky-note" }),
+          ]),
+          _vm._v(" "),
+          _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
+            _vm._v("More info "),
+            _c("i", { staticClass: "fas fa-arrow-circle-right" }),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-lg-3 col-6" }, [
+        _c("div", { staticClass: "small-box bg-danger" }, [
+          _c("div", { staticClass: "inner" }, [
+            _c("h3", [_vm._v("65")]),
+            _vm._v(" "),
+            _c("p", [_vm._v("Proces Verbals")]),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "icon" }, [
+            _c("i", { staticClass: "ion fas fa-book" }),
           ]),
           _vm._v(" "),
           _c("a", { staticClass: "small-box-footer", attrs: { href: "#" } }, [
@@ -48657,7 +49170,233 @@ var render = function () {
     [
       _c("page-title", { attrs: { title: "Les proces Verbales" } }),
       _vm._v(" "),
-      _vm._m(0),
+      _c("div", { staticClass: "row" }, [
+        _c("div", { staticClass: "col-12" }, [
+          _c("div", { staticClass: "card" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c(
+              "div",
+              {
+                staticClass: "card-body table-responsive p-0",
+                staticStyle: { height: "300px" },
+              },
+              [
+                _c(
+                  "table",
+                  { staticClass: "table table-head-fixed text-nowrap" },
+                  [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.procesverbals, function (procesverbal) {
+                        return _c("tr", { key: procesverbal.id }, [
+                          _c("td", [_vm._v(_vm._s(procesverbal.id))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(procesverbal.name))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(procesverbal.client_appartement_immeuble)
+                            ),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(procesverbal.signature_acquereur)),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c("span", { staticClass: "tag tag-success" }, [
+                              _vm._v(
+                                _vm._s(_vm.convert(procesverbal.created_at))
+                              ),
+                            ]),
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-success btn-sm",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.editProcesVerbal(procesverbal.id)
+                                  },
+                                },
+                              },
+                              [_vm._v("Edit")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-danger btn-sm",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.deleteProcesVerbal(
+                                      procesverbal.id
+                                    )
+                                  },
+                                },
+                              },
+                              [_vm._v("Delete")]
+                            ),
+                          ]),
+                        ])
+                      }),
+                      0
+                    ),
+                  ]
+                ),
+              ]
+            ),
+          ]),
+        ]),
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticClass: "modal fade",
+          attrs: {
+            id: "addNew",
+            tabindex: "-1",
+            "aria-labelledby": "exampleModalLabel",
+            "aria-hidden": "true",
+          },
+        },
+        [
+          _c("div", { staticClass: "modal-dialog" }, [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    staticClass: "modal-title",
+                    attrs: { id: "exampleModalLabel" },
+                  },
+                  [
+                    _vm._v(
+                      _vm._s(
+                        _vm.is_Editing
+                          ? "Update Proces Verbal"
+                          : "Add New Proces Verbal"
+                      )
+                    ),
+                  ]
+                ),
+                _vm._v(" "),
+                _vm._m(2),
+              ]),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function ($event) {
+                      $event.preventDefault()
+                      _vm.is_Editing
+                        ? _vm.updateProcesVerbal()
+                        : _vm.createProcesVerbal()
+                    },
+                  },
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value:
+                                _vm.procesverbal.contrat_vente_definitif_id,
+                              expression:
+                                "procesverbal.contrat_vente_definitif_id",
+                            },
+                          ],
+                          staticClass: "form-control",
+                          attrs: { id: "contrat_vente_definitif_id" },
+                          on: {
+                            change: function ($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function (o) {
+                                  return o.selected
+                                })
+                                .map(function (o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.procesverbal,
+                                "contrat_vente_definitif_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            },
+                          },
+                        },
+                        [
+                          _c(
+                            "option",
+                            { attrs: { value: "", hidden: "", selected: "" } },
+                            [_vm._v("Contrat Vente")]
+                          ),
+                          _vm._v(" "),
+                          _vm._l(
+                            _vm.contratventedefinitifs,
+                            function (contratventedefinitif) {
+                              return _c(
+                                "option",
+                                {
+                                  key: contratventedefinitif.id,
+                                  domProps: { value: contratventedefinitif.id },
+                                },
+                                [
+                                  _vm._v(
+                                    _vm._s(
+                                      contratventedefinitif.client_appartement_immeuble
+                                    )
+                                  ),
+                                ]
+                              )
+                            }
+                          ),
+                        ],
+                        2
+                      ),
+                    ]),
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-secondary",
+                        attrs: { type: "button", "data-dismiss": "modal" },
+                      },
+                      [_vm._v("Close")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" },
+                      },
+                      [_vm._v(_vm._s(_vm.is_Editing ? "Update" : "Create"))]
+                    ),
+                  ]),
+                ]
+              ),
+            ]),
+          ]),
+        ]
+      ),
     ],
     1
   )
@@ -48667,21 +49406,76 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8 mt-5" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v("Proces Verbals Component"),
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _vm._v(
-              "\n                    I'm an Proces Verbals component.\n                "
-            ),
-          ]),
-        ]),
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [
+        _vm._v("Liste des Proces Verbals"),
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-tools" }, [
+        _c(
+          "div",
+          {
+            staticClass: "input-group input-group-sm",
+            staticStyle: { width: "150px" },
+          },
+          [
+            _c("input", {
+              staticClass: "form-control float-right",
+              attrs: {
+                type: "text",
+                name: "table_search",
+                placeholder: "Search",
+              },
+            }),
+            _vm._v(" "),
+            _c("div", { staticClass: "input-group-append" }, [
+              _c(
+                "button",
+                { staticClass: "btn btn-default", attrs: { type: "submit" } },
+                [_c("i", { staticClass: "fas fa-search" })]
+              ),
+            ]),
+          ]
+        ),
       ]),
     ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("ID")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Directeur Commercial")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Contrat Vente")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Signature Acquereur")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Created_at")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Actions")]),
+      ]),
+    ])
+  },
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close",
+        },
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
   },
 ]
 render._withStripped = true
@@ -50004,7 +50798,26 @@ var render = function () {
                             ]),
                           ]),
                           _vm._v(" "),
-                          _vm._m(2, true),
+                          _c("td", [
+                            _c(
+                              "button",
+                              { staticClass: "btn btn-success btn-sm" },
+                              [_vm._v("View")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "button",
+                              {
+                                staticClass: "btn btn-danger btn-sm",
+                                on: {
+                                  click: function ($event) {
+                                    return _vm.deleteUser(user.id)
+                                  },
+                                },
+                              },
+                              [_vm._v("Delete")]
+                            ),
+                          ]),
                         ])
                       }),
                       0
@@ -50072,18 +50885,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Created_at")]),
         _vm._v(" "),
         _c("th", [_vm._v("Actions")]),
-      ]),
-    ])
-  },
-  function () {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("td", [
-      _c("button", { staticClass: "btn btn-success btn-sm" }, [_vm._v("View")]),
-      _vm._v(" "),
-      _c("button", { staticClass: "btn btn-danger btn-sm" }, [
-        _vm._v("Delete"),
       ]),
     ])
   },

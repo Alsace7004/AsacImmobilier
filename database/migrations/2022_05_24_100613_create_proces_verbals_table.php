@@ -16,7 +16,7 @@ class CreateProcesVerbalsTable extends Migration
         Schema::create('proces_verbals', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('contrat_vente_definitif_id');
+            $table->unsignedBigInteger('contrat_vente_definitif_id')->unique();
             $table->string('signature_acquereur');
 
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');

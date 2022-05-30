@@ -39,7 +39,7 @@
                       <td><span class="tag tag-success">{{user.created_at}}</span></td>
                       <td>
                           <button class="btn btn-success btn-sm">View</button>
-                          <button class="btn btn-danger btn-sm">Delete</button>
+                          <button @click="deleteUser(user.id)" class="btn btn-danger btn-sm">Delete</button>
                       </td>
                     </tr>
                     
@@ -67,7 +67,33 @@
                 axios.get('api/users').then((users)=>{
                     this.users = users.data;
                 })
-            }
+            },
+            deleteUser(id){
+                    Swal.fire({
+                    title: 'Etes vous sûr???',
+                    text: "Pas de récuperation possible!!!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Oui, supprimer le'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            axios.delete(`api/users/${id}`).then(()=>{
+                                    Swal.fire(
+                                    'Deleted!',
+                                    'Utilisateur a été supprimé.',
+                                    'success'
+                                    )
+                                this.loadUsers();
+                            }).catch((err)=>{
+                                Swal.fire('Error !!!','Une Erreur Survenue !!!','error')
+                            })
+                        }else{
+                            Swal.fire('Cancelled !!!','Utilisateur toujours disponible !!!','error')
+                        }
+                })//first Then
+            },//deleteUsers
         },
         created(){
             this.loadUsers();
