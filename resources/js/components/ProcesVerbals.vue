@@ -146,6 +146,12 @@
                 })
             },
             createProcesVerbal(){
+                let pp = document.querySelector("#contrat_vente_definitif_id").value;
+                let pvi = document.querySelector("#user_id").value;
+                if(pp ==""||pvi ==""){
+                    Toast.fire({icon: 'error',title: 'veuillez remplir tous les champs !!!'});
+                    return;
+                }
                     axios.post('api/procesVerbals',this.procesverbal).then(()=>{
                     //$('#addNew').modal('hide'); 
                     Swal.fire('Created!','Proces Verbal Ajouter avec success.','success') ;
