@@ -71,6 +71,6 @@
       </div>
       <!-- /.login-card-body -->
     </div>
-      <p class="login-box-msg mt-3">ALABI Bamidélé 2021-2022</p>
+      <p class="login-box-msg mt-3">© ALABI Bamidélé 2021-2022</p>
   </div>
 @endsection
