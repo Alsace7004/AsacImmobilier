@@ -13,7 +13,7 @@
                             <div class="icon">
                               <i class="ion fas fa-users"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <router-link to="/users" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></router-link>
                           </div>
                         </div>
                         <!-- ./col -->
@@ -28,7 +28,7 @@
                             <div class="icon">
                               <i class="ion fas fa-building"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <router-link to="/immeubles" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></router-link>
                           </div>
                         </div>
                         <!-- ./col -->
@@ -43,7 +43,7 @@
                             <div class="icon">
                               <i class="ion fas fa-house-user"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <router-link to="/appartements" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></router-link>
                           </div>
                         </div>
                         <!-- ./col -->
@@ -58,7 +58,7 @@
                             <div class="icon">
                               <i class="ion fas fa-users"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <router-link to="/clients" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></router-link>
                           </div>
                         </div>
                         <!-- ./col -->
@@ -75,7 +75,7 @@
                             <div class="icon">
                               <i class="ion fas fa-search-location"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <router-link to="/visites" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></router-link>
                           </div>
                         </div>
                         <!-- ./col -->
@@ -90,7 +90,7 @@
                             <div class="icon">
                               <i class="ion fas fa-edit"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <router-link to="/promesseVentes" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></router-link>
                           </div>
                         </div>
                         <!-- ./col -->
@@ -105,7 +105,7 @@
                             <div class="icon">
                               <i class="ion fas fa-balance-scale"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <router-link to="/avocats" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></router-link>
                           </div>
                         </div>
                         <!-- ./col -->
@@ -120,7 +120,7 @@
                             <div class="icon">
                               <i class="ion fas fa-file-signature"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <router-link to="/signatures" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></router-link>
                           </div>
                         </div>
                         <!-- ./col -->
@@ -137,7 +137,7 @@
                             <div class="icon">
                               <i class="ion far fa-image"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <router-link to="/desistements" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></router-link>
                           </div>
                         </div>
                         <!-- ./col -->
@@ -152,7 +152,7 @@
                             <div class="icon">
                               <i class="ion fas fa-dollar-sign"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <router-link to="/payements" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></router-link>
                           </div>
                         </div>
                         <!-- ./col -->
@@ -167,7 +167,7 @@
                             <div class="icon">
                               <i class="ion far fa-sticky-note"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <router-link to="/contratVenteDefinitifs" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></router-link>
                           </div>
                         </div>
                         <!-- ./col -->
@@ -182,7 +182,7 @@
                             <div class="icon">
                               <i class="ion fas fa-book"></i>
                             </div>
-                            <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+                            <router-link to="/procesVerbals" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></router-link>
                           </div>
                         </div>
                         <!-- ./col -->
