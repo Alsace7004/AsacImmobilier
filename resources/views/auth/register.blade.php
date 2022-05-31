@@ -85,5 +85,6 @@
       </div>
       <!-- /.form-box -->
     </div><!-- /.card -->
+    <p class="login-box-msg mt-3">© ALABI Bamidélé 2021-2022</p>
   </div>
 @endsection

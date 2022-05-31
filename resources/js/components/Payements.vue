@@ -35,6 +35,7 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <tr v-if="!payements.length" class="text-center text-danger" style="font-weight:bolder;margin:0px auto">Pas de Payements disponible...</tr>
                     <tr v-for="payement in payements" :key="payement.id">
                       <td>{{payement.id}}</td>
                       <td>{{payement.prix_payer}}</td>

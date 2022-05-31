@@ -37,6 +37,7 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <tr v-if="!signatures.length" class="text-center text-danger" style="font-weight:bolder;margin:0px auto">Pas de signatures disponible...</tr>
                     <tr v-for="signature in signatures" :key="signature.id">
                       <td>{{signature.id}}</td>
                       <td>{{signature.nom}} {{signature.prenom}}</td>

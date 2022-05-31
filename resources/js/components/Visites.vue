@@ -36,6 +36,7 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <tr v-if="!visites.length" class="text-center text-danger" style="font-weight:bolder;margin:0px auto">Pas de Visites disponible...</tr>
                     <tr v-for="visite in visites" :key="visite.id">
                       <td>{{visite.id}}</td>
                       <td>{{visite.nom}} {{visite.prenom1}}</td>

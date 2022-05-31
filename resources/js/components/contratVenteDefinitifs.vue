@@ -40,6 +40,7 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <tr v-if="!contratventedefinitifs.length" class="text-center text-danger" style="font-weight:bolder;margin:0px auto">Pas de Contrat de vente definitif disponible...</tr>
                     <tr v-for="contratventedefinitif in contratventedefinitifs" :key="contratventedefinitif.id">
                       <td>{{contratventedefinitif.id}}</td>
                       <td>{{contratventedefinitif.prix_vente}}</td>

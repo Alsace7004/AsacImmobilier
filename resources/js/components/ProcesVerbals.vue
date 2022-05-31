@@ -36,6 +36,7 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <tr v-if="!procesverbals.length" class="text-center text-danger" style="font-weight:bolder;margin:0px auto">Pas de Proces Verbals disponible...</tr>
                     <tr v-for="procesverbal in procesverbals" :key="procesverbal.id">
                       <td>{{procesverbal.id}}</td>
                       <td>{{procesverbal.name}}</td>
@@ -75,6 +76,13 @@
                                             <option v-for="contratventedefinitif in contratventedefinitifs" :key="contratventedefinitif.id" :value="contratventedefinitif.id" >{{contratventedefinitif.client_appartement_immeuble}}</option>
                                         </select>
                                     </div>
+
+                                    <div class="form-group">
+                                        <select  v-model="procesverbal.user_id" id="user_id" class="form-control">
+                                            <option value="" hidden selected>Utilisateurs</option>
+                                            <option v-for="user in users" :key="user.id" :value="user.id" >{{user.email}}</option>
+                                        </select>
+                                    </div>
                              
                             
                             
@@ -96,6 +104,7 @@
     export default {
         data(){
             return{
+                users:[],
                 contratventedefinitifs:[],
                 procesverbals:[],
                 procesverbal:{
@@ -129,6 +138,11 @@
             loadContratVenteDefinitifs(){
                 axios.get('api/contratVenteDefinitifs').then((contratventedefinitifs)=>{
                     this.contratventedefinitifs = contratventedefinitifs.data;
+                })
+            },
+            loadUsers(){
+                axios.get('api/users').then((users)=>{
+                    this.users = users.data;
                 })
             },
             createProcesVerbal(){
@@ -198,6 +212,7 @@
             },
         },
         created(){
+            this.loadUsers();
             this.loadProcesVerbals();
             this.loadContratVenteDefinitifs();
         },

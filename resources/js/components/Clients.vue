@@ -38,6 +38,7 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <tr v-if="!clients.length" class="text-center text-danger" style="font-weight:bolder;margin:0px auto">Pas de clients disponible...</tr>
                     <tr v-for="client in clients" :key="client.id">
                       <td>{{client.id}}</td>
                       <td>{{client.nom}}</td>

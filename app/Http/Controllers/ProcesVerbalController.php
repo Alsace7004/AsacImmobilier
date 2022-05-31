@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\ProcesVerbal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class ProcesVerbalController extends Controller
 {
+  
     public function procesverbalCount(){
         $nbr_procesverbals = DB::SELECT('SELECT COUNT(*) as nbr_total_procesverbal FROM proces_verbals');
         return $nbr_procesverbals;
@@ -51,7 +53,7 @@ class ProcesVerbalController extends Controller
             'contrat_vente_definitif_id'=>'required|integer|unique:proces_verbals,contrat_vente_definitif_id',
             'signature_acquereur'=>'required|string'
         ]);
-        $data['user_id'] = 2;
+        
         $data['signature_acquereur'] = '@cqu'.uniqid();
         return ProcesVerbal::create($data);
     }
@@ -83,7 +85,7 @@ class ProcesVerbalController extends Controller
             'contrat_vente_definitif_id'=>'required|integer',
             'signature_acquereur'=>'required|string'
         ]);
-        $data['user_id'] = 3;
+        
         $data['signature_acquereur'] = '@cqu'.uniqid();
         $procesVerbal->update($data);
         return $procesVerbal;

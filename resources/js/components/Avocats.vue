@@ -38,6 +38,7 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <tr v-if="!avocats.length" class="text-center text-danger" style="font-weight:bolder;margin:0px auto">Pas d'Avocats disponible...</tr>
                     <tr v-for="avocat in avocats" :key="avocat.id">
                       <td>{{avocat.id}}</td>
                       <td>{{avocat.nom}}</td>

@@ -42,6 +42,7 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <tr v-if="!promesseventes.length" class="text-center text-danger" style="font-weight:bolder;margin:0px auto">Pas de Promesse de ventes disponible...</tr>
                     <tr v-for="promessevente in promesseventes" :key="promessevente.id">
                       <td>{{promessevente.id}}</td>
                       <td>{{promessevente.tauxTVA}}%</td>

@@ -36,6 +36,7 @@
                     </tr>
                   </thead>
                   <tbody>
+                    <tr v-if="!desistements.length" class="text-center text-danger" style="font-weight:bolder;margin:0px auto">Pas de desistements disponible...</tr>
                     <tr v-for="desistement in desistements" :key="desistement.id">
                       <td>{{desistement.id}}</td>
                       <td>{{desistement.numero}}</td>
