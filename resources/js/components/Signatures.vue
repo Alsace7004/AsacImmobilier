@@ -153,6 +153,12 @@
                   console.log('valeur du this.file2',this.signature.signaturePromesseDirecteurCommercial);
             },*/
             createSignature(){
+                let av_id = document.querySelector("#avocat_id").value;
+                let pv_id = document.querySelector("#promesse_vente_id").value;
+                if(av_id ==""||pv_id ==""){
+                    Toast.fire({icon: 'error',title: 'veuillez remplir tous les champs !!!'});
+                    return;
+                }
                     axios.post('api/signatures',this.signature).then(()=>{
                     //$('#addNew').modal('hide'); 
                     Swal.fire('Created!','Signature Ajouter avec success.','success') ;

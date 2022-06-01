@@ -84,7 +84,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <input type="text" v-model="contratventedefinitif.prix_vente"  id="prix_payer" placeholder="prix de vente de l'appart..." class="form-control">
+                                        <input type="text" v-model="contratventedefinitif.prix_vente"  id="prix_vente" placeholder="prix de vente de l'appart..." class="form-control">
                                     </div>
                                     <div class="form-group">
                                             <select  v-model="contratventedefinitif.type_payement" id="type_payement" class="form-control">
@@ -181,6 +181,15 @@
                 })
             },
             createContratVenteDefinitif(){
+                    let da = document.querySelector("#description_appartement").value;
+                    let pv = document.querySelector("#prix_vente").value;
+                    let av_id = document.querySelector("#avocat_id").value;
+                    let pv_id = document.querySelector("#promesse_vente_id").value;
+                    let tp = document.querySelector("#type_payement").value;
+                    if(da ==""||pv ==""||av_id ==""||pv_id ==""||tp ==""){
+                        Toast.fire({icon: 'error',title: 'veuillez remplir tous les champs !!!'});
+                        return;
+                    }
                     axios.post('api/contratVenteDefinitifs',this.contratventedefinitif).then(()=>{
                     //$('#addNew').modal('hide'); 
                     Swal.fire('Created!','Contrat de vente Ajouter avec success.','success') ;
