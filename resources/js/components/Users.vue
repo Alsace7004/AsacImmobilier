@@ -39,8 +39,8 @@
                       <td>{{user.email}}</td>
                       <td><span class="tag tag-success">{{convert(user.created_at)}}</span></td>
                       <td>
-                          <button class="btn btn-success btn-sm">View</button>
-                          <button @click="deleteUser(user.id)" class="btn btn-danger btn-sm">Delete</button>
+                          <!--<button class="btn btn-success btn-sm">View</button>
+                          <button @click="deleteUser(user.id)" class="btn btn-danger btn-sm">Delete</button>-->
                       </td>
                     </tr>
                     
