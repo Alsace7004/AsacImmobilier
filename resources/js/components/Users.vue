@@ -33,8 +33,8 @@
                   </thead>
                   <tbody>
                     <tr v-if="!users.length" class="text-center text-danger" style="font-weight:bolder;margin:0px auto">Pas de personnels disponible...</tr>
-                    <tr v-for="user in users" :key="user.id">
-                      <td>{{user.id}}</td>
+                    <tr v-for="(user,i) in users" :key="user.id">
+                      <td>{{i=i+1}}</td>
                       <td>{{user.name}}</td>
                       <td>{{user.email}}</td>
                       <td><span class="tag tag-success">{{convert(user.created_at)}}</span></td>
