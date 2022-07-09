@@ -122,7 +122,7 @@
           
             convert(jour){
                 let  date =  new Date(jour);
-                return  date.toDateString() // "sun nov 29 2020 "
+                return  date.toLocaleDateString() // "sun nov 29 2020 "
             },
             newModal(){
                 this.visite={
