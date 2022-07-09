@@ -37,7 +37,7 @@
                       <td>{{user.id}}</td>
                       <td>{{user.name}}</td>
                       <td>{{user.email}}</td>
-                      <td><span class="tag tag-success">{{user.created_at}}</span></td>
+                      <td><span class="tag tag-success">{{convert(user.created_at)}}</span></td>
                       <td>
                           <button class="btn btn-success btn-sm">View</button>
                           <button @click="deleteUser(user.id)" class="btn btn-danger btn-sm">Delete</button>
@@ -64,6 +64,10 @@
             }
         },
         methods:{
+           convert(jour){
+                let  date =  new Date(jour);
+                return  date.toDateString() // "sun nov 29 2020 "
+            },
             loadUsers(){
                 axios.get('api/users').then((users)=>{
                     this.users = users.data;
