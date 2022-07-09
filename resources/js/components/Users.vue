@@ -28,7 +28,7 @@
                       <th>Nom</th>
                       <th>Email</th>
                       <th>Created_at</th>
-                      <th>Actions</th>
+                      <!--<th>Actions</th>-->
                     </tr>
                   </thead>
                   <tbody>
